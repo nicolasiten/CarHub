@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CarHub.Infrastructure.Data;
+using CarHub.Core.Interfaces;
 
 namespace CarHub.Web
 {
@@ -34,6 +35,8 @@ namespace CarHub.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
