@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CarHub.Infrastructure.Data;
 using CarHub.Infrastructure.Identity;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,10 @@ namespace CarHub.Web
                 await identityContext.Database.MigrateAsync();
                 var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                 await AppIdentityDbContextSeed.SeedAsync(userManager);
+
+                // main Db Setup
+                var applicationDbContext = services.GetRequiredService<ApplicationDbContext>();
+                await applicationDbContext.Database.MigrateAsync();
             }
 
             await host.RunAsync();

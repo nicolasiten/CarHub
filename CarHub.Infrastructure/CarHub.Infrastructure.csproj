@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarHub.Core\CarHub.Core.csproj" />
+  </ItemGroup>
+
 </Project>
