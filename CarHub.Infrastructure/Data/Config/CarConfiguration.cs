@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CarHub.Infrastructure.Data.Config
 {
-    public class CarConfigurator : IEntityTypeConfiguration<Car>
+    public class CarConfiguration : IEntityTypeConfiguration<Car>
     {
         public void Configure(EntityTypeBuilder<Car> builder)
         {

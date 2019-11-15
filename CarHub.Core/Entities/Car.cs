@@ -9,6 +9,7 @@ namespace CarHub.Core.Entities
         public Car()
         {
             Repairs = new HashSet<Repair>();
+            Images = new HashSet<Image>();
         }
 
         public string Vin { get; set; }
@@ -32,6 +33,10 @@ namespace CarHub.Core.Entities
         public DateTime? SaleDate { get; set; }
 
         public bool ShowCase { get; set; }
+
+        public virtual Thumbnail ThumbnailImage { get; set; }
+
+        public virtual ICollection<Image> Images { get; set; }
 
         public virtual ICollection<Repair> Repairs { get; set; }
     }
