@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -15,6 +18,15 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
+
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-image-preview@4.5.0/dist/filepond-plugin-image-preview.min.css" 
+          integrity="sha384-OFsaKFHKNKXkS+hMdHFFXGqaufY9Ebbnl1lOWyEKNlNS5HdbOTAHE1lthJ0AtTee" 
+          crossorigin="anonymous">
+    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster@2.2.0/dist/filepond-plugin-file-poster.css" 
+          integrity="sha384-D6yf3Rq8MPfyyFFmO7Ed6am5BsdWIL1P5hg6dEQK+hPeRlPlS7s6mBhsnoU3YGvv" 
+          crossorigin="anonymous">
+
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/carhub.css" />
 </head>
@@ -35,6 +47,16 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="Index">Overview</a>
                         </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="dropdown nav-link">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a asp-controller="Cars" asp-action="Overview">Car Overview</a></li>
+                                    <li><a asp-controller="Cars" asp-action="AddCar">Add Car</a></li>
+                                </ul>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
@@ -65,7 +87,7 @@
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"
                 crossorigin="anonymous"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
         </script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -75,7 +97,21 @@
         </script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script src="https://unpkg.com/filepond-plugin-file-encode@2.1.4/dist/filepond-plugin-file-encode.min.js" 
+            integrity="sha384-0J8PjSkK2Xpj5XWwhYHhEWZuo8VvpSvwOTXHfzjk+3GR1lpUMMoDfqJTp/MbjWpL" 
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size@2.2.0/dist/filepond-plugin-file-validate-size.min.js" 
+            integrity="sha384-uqyJcRxES+sEUKBk6FeDNwXfJU0N67cqHEXYBdUvd06IKa1KIGYRO0FRYAgfElxj"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation@1.0.6/dist/filepond-plugin-image-exif-orientation.min.js" 
+            integrity="sha384-KMLhXCoPMwx0MRcpXDoJfcDeJSVXvxZDPsD2qUPbVamNdV2QgKS1sKE6k8v6CDjc"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview@4.5.0/dist/filepond-plugin-image-preview.min.js" 
+            integrity="sha384-/2YVhwIjyI+BKWY5Vfy0JvEx0wix9rsoclkM02w3Du82Q7Ncs41UB7A4VSptGi/1" 
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/filepond@4.7.4/dist/filepond.min.js" 
+            integrity="sha384-3BqjeCqco7CL9X3uWgMZMQ4DlhMGJlVUW1/RD3uWCaWb3I0/htOhV/uQc0Fgbsi8" 
+            crossorigin="anonymous"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

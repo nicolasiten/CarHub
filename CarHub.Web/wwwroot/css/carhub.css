@@ -54,3 +54,7 @@ nav {
 .navbar-toggler {
     border-color: lightgrey;
 } 
+
+.pagetitle {
+    margin-top: 40px;
+}

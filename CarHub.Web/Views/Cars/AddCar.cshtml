@@ -1,0 +1,96 @@
+﻿@model CarModel
+@{
+    ViewData["Title"] = "Add Car";
+}
+
+<h1 class="pagetitle">@ViewData["Title"]</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-10 shadow">
+        <form method="post">
+            <div class="text-center" enctype="multipart/form-data">
+                <h4>@ViewData["Title"]</h4>
+            </div>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Id" />
+            <div class="form-group">
+                <label asp-for="@Model.Vin"></label>
+                <input asp-for="@Model.Vin" class="form-control" />
+                <span asp-validation-for="@Model.Vin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Year"></label>
+                <input asp-for="@Model.Year" class="form-control" />
+                <span asp-validation-for="@Model.Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Make"></label>
+                <input asp-for="@Model.Make" class="form-control" />
+                <span asp-validation-for="@Model.Make" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Model"></label>
+                <input asp-for="@Model.Model" class="form-control" />
+                <span asp-validation-for="@Model.Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Trim"></label>
+                <input asp-for="@Model.Trim" class="form-control" />
+                <span asp-validation-for="@Model.Trim" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.PurchaseDate"></label>
+                <input asp-for="@Model.PurchaseDate" class="form-control" />
+                <span asp-validation-for="@Model.PurchaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LotDate"></label>
+                <input asp-for="@Model.LotDate" class="form-control" />
+                <span asp-validation-for="@Model.LotDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.PurchasePrice"></label>
+                <input asp-for="@Model.PurchasePrice" class="form-control" />
+                <span asp-validation-for="@Model.PurchasePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.SellingPrice"></label>
+                <input asp-for="@Model.SellingPrice" class="form-control" />
+                <span asp-validation-for="@Model.SellingPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ShowCase"></label>
+                <input asp-for="@Model.ShowCase" class="form-control" />
+                <span asp-validation-for="@Model.ShowCase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="file"
+                       class="filepond"
+                       id="images"
+                       name="images"
+                       multiple
+                       data-max-file-size="10MB"
+                       data-max-files="10">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <script type="text/javascript">
+        FilePond.registerPlugin(
+            FilePondPluginFileEncode,
+            FilePondPluginFileValidateSize,
+            FilePondPluginImageExifOrientation,
+            FilePondPluginImagePreview
+        );
+        
+        FilePond.create( document.querySelector('.filepond'));
+    </script>
+}
