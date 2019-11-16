@@ -14,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CarHub.Infrastructure.Data;
 using CarHub.Core.Interfaces;
+using CarHub.Web.Interfaces;
+using CarHub.Web.Services;
 
 namespace CarHub.Web
 {
@@ -37,6 +39,9 @@ namespace CarHub.Web
             });
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
+
+            // services
+            services.AddScoped<ICarModelService, CarModelService>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

@@ -2,16 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarHub.Web.Interfaces;
 using CarHub.Web.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace CarHub.Web.Controllers
 {
     public class CarsController : Controller
     {
+        private readonly ICarModelService _carModelService;
+
+        public CarsController(ICarModelService carModelService)
+        {
+            _carModelService = carModelService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -27,19 +33,17 @@ namespace CarHub.Web.Controllers
         [HttpPost]
         public IActionResult AddCar(CarModel carModel)
         {
+            IEnumerable<string> imageErrors = _carModelService.ValidateCarImages(Request.Form["images"]);
+
+            foreach (string error in imageErrors)
+            {
+                ModelState.AddModelError("", error);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(carModel);
             }
-
-            var images = Request.Form["images"];
-            if (!images.Any() || images.First() == string.Empty)
-            {
-                ModelState.AddModelError("", "Add at least one image");
-                return View();
-            }
-
-            // TODO validate Image size and type
 
             return View();
         }
