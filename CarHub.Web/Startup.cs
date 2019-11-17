@@ -16,6 +16,7 @@ using CarHub.Infrastructure.Data;
 using CarHub.Core.Interfaces;
 using CarHub.Web.Interfaces;
 using CarHub.Web.Services;
+using AutoMapper;
 
 namespace CarHub.Web
 {
@@ -42,6 +43,8 @@ namespace CarHub.Web
 
             // services
             services.AddScoped<ICarModelService, CarModelService>();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

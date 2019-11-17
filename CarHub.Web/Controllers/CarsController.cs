@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CarHub.Web.Interfaces;
 using CarHub.Web.Models;
+using CarHub.Web.Utils.Alerts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +32,7 @@ namespace CarHub.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddCar(CarModel carModel)
+        public async Task<IActionResult> AddCar(CarModel carModel)
         {
             IEnumerable<string> imageErrors = _carModelService.ValidateCarImages(Request.Form["images"]);
 
@@ -45,6 +46,14 @@ namespace CarHub.Web.Controllers
                 return View(carModel);
             }
 
+            await _carModelService.SaveCarModelAsync(carModel, Request.Form["images"]);
+
+            return RedirectToAction("Overview").WithSuccess("Success", "Successfully saved Car.");
+        }
+
+        [Authorize]
+        public IActionResult Overview()
+        {
             return View();
         }
     }
