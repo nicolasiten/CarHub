@@ -52,9 +52,10 @@ namespace CarHub.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Overview()
+        public async Task<IActionResult> Overview()
         {
-            return View();
+            var carModels = await _carModelService.GetCarModelsAsync();
+            return View(carModels);
         }
     }
 }

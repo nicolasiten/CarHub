@@ -1,7 +1,52 @@
-﻿
+﻿@model IEnumerable<CarModel>
 @{
     ViewData["Title"] = "Overview";
 }
 
-<h1>ViewData["Title"]</h1>
+<h1>@ViewData["Title"]</h1>
 
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-image overview-table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Vin</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Make</th>
+                        <th scope="col">Model</th>
+                        <th scope="col">Trim</th>
+                        <th scope="col">PurchaseDate</th>
+                        <th scope="col">LotDate</th>
+                        <th scope="col">PurchasePrice</th>
+                        <th scope="col">SellingPrice</th>
+                        <th scope="col">SaleDate</th>
+                        <th scope="col">ShowCase</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (CarModel carModel in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@carModel.Thumbnail" class="img rounded" style="height: 83px; width: 125px;" />
+                            </td>
+                            <td>@carModel.Vin</td>
+                            <td>@carModel.Year</td>
+                            <td>@carModel.Make</td>
+                            <td>@carModel.Make</td>
+                            <td>@carModel.Trim</td>
+                            <td>@carModel.PurchaseDate.ToShortDateString()</td>
+                            <td>@carModel.LotDate.ToShortDateString()</td>
+                            <td>@carModel.PurchasePrice</td>
+                            <td>@carModel.SellingPrice</td>
+                            <td>@carModel.SaleDate</td>
+                            <td>@carModel.ShowCase</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

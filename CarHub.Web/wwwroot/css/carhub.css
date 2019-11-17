@@ -58,3 +58,7 @@ nav {
 .pagetitle {
     margin-top: 40px;
 }
+
+.overview-table > tbody > tr > td {
+    vertical-align: middle !important;
+}

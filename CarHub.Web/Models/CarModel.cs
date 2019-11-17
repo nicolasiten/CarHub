@@ -52,6 +52,8 @@ namespace CarHub.Web.Models
         [Required]
         public bool ShowCase { get; set; }
 
-        public IEnumerable<IFormFile> Images { get; set; }
+        public IEnumerable<string> Images { get; set; }
+
+        public string Thumbnail { get; set; }
     }
 }

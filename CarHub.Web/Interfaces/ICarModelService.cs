@@ -11,5 +11,7 @@ namespace CarHub.Web.Interfaces
         IEnumerable<string> ValidateCarImages(IEnumerable<string> images);
 
         Task SaveCarModelAsync(CarModel carModel, IEnumerable<string> images);
+
+        Task<IEnumerable<CarModel>> GetCarModelsAsync();
     }
 }
