@@ -27,7 +27,7 @@ namespace CarHub.Web.Controllers
         [Authorize]
         public IActionResult AddCar()
         {
-            return View();
+            return View(new CarModel());
         }
 
         [Authorize]
@@ -56,6 +56,11 @@ namespace CarHub.Web.Controllers
         {
             var carModels = await _carModelService.GetCarModelsAsync();
             return View(carModels);
+        }
+
+        public IActionResult AddRepair()
+        {
+            return PartialView("_RepairRow", new RepairModel());
         }
     }
 }

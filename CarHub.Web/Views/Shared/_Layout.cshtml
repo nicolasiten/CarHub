@@ -19,12 +19,15 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
 
-    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-image-preview@4.5.0/dist/filepond-plugin-image-preview.min.css" 
-          integrity="sha384-OFsaKFHKNKXkS+hMdHFFXGqaufY9Ebbnl1lOWyEKNlNS5HdbOTAHE1lthJ0AtTee" 
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-image-preview@4.5.0/dist/filepond-plugin-image-preview.min.css"
+          integrity="sha384-OFsaKFHKNKXkS+hMdHFFXGqaufY9Ebbnl1lOWyEKNlNS5HdbOTAHE1lthJ0AtTee"
           crossorigin="anonymous">
     <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster@2.2.0/dist/filepond-plugin-file-poster.css" 
-          integrity="sha384-D6yf3Rq8MPfyyFFmO7Ed6am5BsdWIL1P5hg6dEQK+hPeRlPlS7s6mBhsnoU3YGvv" 
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster@2.2.0/dist/filepond-plugin-file-poster.css"
+          integrity="sha384-D6yf3Rq8MPfyyFFmO7Ed6am5BsdWIL1P5hg6dEQK+hPeRlPlS7s6mBhsnoU3YGvv"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" 
+          integrity="sha384-J/JrQzMo5A/ewqt8Xsq6nTHQVVAk/OOhH66uqpFN9+3+MiM427Ub97OApi7o6orj" 
           crossorigin="anonymous">
 
     <link rel="stylesheet" href="~/css/site.css" />
@@ -98,20 +101,29 @@
         </script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-encode@2.1.4/dist/filepond-plugin-file-encode.min.js" 
-            integrity="sha384-0J8PjSkK2Xpj5XWwhYHhEWZuo8VvpSvwOTXHfzjk+3GR1lpUMMoDfqJTp/MbjWpL" 
+    <script src="https://unpkg.com/filepond-plugin-file-encode@2.1.4/dist/filepond-plugin-file-encode.min.js"
+            integrity="sha384-0J8PjSkK2Xpj5XWwhYHhEWZuo8VvpSvwOTXHfzjk+3GR1lpUMMoDfqJTp/MbjWpL"
             crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size@2.2.0/dist/filepond-plugin-file-validate-size.min.js" 
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size@2.2.0/dist/filepond-plugin-file-validate-size.min.js"
             integrity="sha384-uqyJcRxES+sEUKBk6FeDNwXfJU0N67cqHEXYBdUvd06IKa1KIGYRO0FRYAgfElxj"
             crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation@1.0.6/dist/filepond-plugin-image-exif-orientation.min.js" 
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation@1.0.6/dist/filepond-plugin-image-exif-orientation.min.js"
             integrity="sha384-KMLhXCoPMwx0MRcpXDoJfcDeJSVXvxZDPsD2qUPbVamNdV2QgKS1sKE6k8v6CDjc"
             crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-preview@4.5.0/dist/filepond-plugin-image-preview.min.js" 
-            integrity="sha384-/2YVhwIjyI+BKWY5Vfy0JvEx0wix9rsoclkM02w3Du82Q7Ncs41UB7A4VSptGi/1" 
+    <script src="https://unpkg.com/filepond-plugin-image-preview@4.5.0/dist/filepond-plugin-image-preview.min.js"
+            integrity="sha384-/2YVhwIjyI+BKWY5Vfy0JvEx0wix9rsoclkM02w3Du82Q7Ncs41UB7A4VSptGi/1"
             crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/filepond@4.7.4/dist/filepond.min.js" 
-            integrity="sha384-3BqjeCqco7CL9X3uWgMZMQ4DlhMGJlVUW1/RD3uWCaWb3I0/htOhV/uQc0Fgbsi8" 
+    <script src="https://unpkg.com/filepond@4.7.4/dist/filepond.min.js"
+            integrity="sha384-3BqjeCqco7CL9X3uWgMZMQ4DlhMGJlVUW1/RD3uWCaWb3I0/htOhV/uQc0Fgbsi8"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"
+            integrity="sha384-Cs/dzAkV4HPqJZfWfbDK10kaEU0G6f7ZpJKFfr2oSUNO5NuEM5Wl8gAh3w/Qz4+z"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"
+            integrity="sha384-Ltf3zlo018jgSFarBV4ZXF8GxwymfafIj3qWz3rrjhL8hTVd2XzglHH+BCuIKnbk"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js" 
+            integrity="sha384-hVry8+iweLeSXncfkJ1oB4r2dRAI2pHZNsSCjTJl4o6hspfUDuGlBKm1nqORIp3S" 
             crossorigin="anonymous"></script>
     @RenderSection("Scripts", required: false)
 </body>

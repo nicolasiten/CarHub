@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <table class="table table-image overview-table">
+            <table id="cars" class="overview-table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -22,6 +22,8 @@
                         <th scope="col">PurchasePrice</th>
                         <th scope="col">SellingPrice</th>
                         <th scope="col">SaleDate</th>
+                        <th scope="col">Repair</th>
+                        <th scope="col">RepairCost</th>
                         <th scope="col">ShowCase</th>
                     </tr>
                 </thead>
@@ -50,3 +52,11 @@
         </div>
     </div>
 </div>
+
+@section Scripts  {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#cars').DataTable();
+        });
+    </script>
+}

@@ -63,6 +63,7 @@
                 <span asp-validation-for="@Model.ShowCase" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label>Upload images (top one will be used as thumbnail)</label>
                 <input type="file"
                        class="filepond"
                        id="images"
@@ -70,6 +71,27 @@
                        multiple
                        data-max-file-size="5MB"
                        data-max-files="10">
+            </div>
+            <div class="form-group">
+                <label>Add Repairs</label>
+                <table id="edit-rows" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Repair Description</th>
+                            <th scope="col">Repair Cost</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var repairModel in Model.RepairModels)
+                        {
+                            await Html.RenderPartialAsync("_RepairRow", repairModel);
+                        }
+                    </tbody>
+                </table>
+                <div class="text-right">
+                    <a asp-action="AddRepair" id="add-item">Add New Repair</a>
+                </div>
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -81,6 +103,7 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <script src="~/js/editrow.js"></script>
     <script type="text/javascript">
         FilePond.registerPlugin(
             FilePondPluginFileEncode,

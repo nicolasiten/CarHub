@@ -1,0 +1,22 @@
+﻿@using HtmlHelpers.BeginCollectionItemCore
+@model RepairModel
+
+    <tr class="edit-row">
+        @using (Html.BeginCollectionItem("RepairModels"))
+        {
+            <input class="id-field" type="hidden" asp-for="@Model.Id" />
+            <input type="hidden" asp-for="@Model.CarFk" />
+            <input class="delete-field" type="hidden" asp-for="@Model.Delete" />
+            <td>
+                <input asp-for="@Model.RepairDescription" class="form-control" />
+                <span asp-validation-for="@Model.RepairDescription" class="text-danger"></span>
+            </td>
+            <td>
+                <input asp-for="@Model.RepairCost" class="form-control" />
+                <span asp-validation-for="@Model.RepairCost" class="text-danger"></span>
+            </td>
+            <td>
+                <a href="#" class="remove-row">Delete</a>
+            </td>
+        }
+    </tr>

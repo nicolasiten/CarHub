@@ -10,6 +10,14 @@ namespace CarHub.Web.Models
 {
     public class CarModel
     {
+        public CarModel()
+        {
+            RepairModels = new List<RepairModel>();
+            Images = new List<string>();
+            PurchaseDate = DateTime.Now;
+            LotDate = DateTime.Now;
+        }
+
         public int? Id { get; set; }
 
         [Required]
@@ -51,6 +59,8 @@ namespace CarHub.Web.Models
 
         [Required]
         public bool ShowCase { get; set; }
+
+        public IEnumerable<RepairModel> RepairModels { get; set; }
 
         public IEnumerable<string> Images { get; set; }
 

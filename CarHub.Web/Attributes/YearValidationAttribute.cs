@@ -19,14 +19,15 @@ namespace CarHub.Web.Attributes
         protected override ValidationResult IsValid(object value, ValidationContext validation)
         {
             int yearValue = (int)value;
+            int maxYear = DateTime.Now.Year + 1;
 
-            if (yearValue >= MinYear && yearValue <= DateTime.Now.Year)
+            if (yearValue >= MinYear && yearValue <= maxYear)
             {
                 return ValidationResult.Success;
             }
             else
             {
-                return new ValidationResult($"Year must be between {MinYear} and {DateTime.Now.Year}");
+                return new ValidationResult($"Year must be between {MinYear} and {maxYear}");
             }
         }
     }

@@ -11,11 +11,16 @@ namespace CarHub.Web.Mappings
         {
             CreateMap<Car, CarModel>()
                 .ForMember(cm => cm.Images, c => c.MapFrom(car => car.Images))
-                .ForMember(cm => cm.Thumbnail, c => c.MapFrom(car => car.ThumbnailImage));
+                .ForMember(cm => cm.Thumbnail, c => c.MapFrom(car => car.ThumbnailImage))
+                .ForMember(cm => cm.RepairModels, c => c.MapFrom(car => car.Repairs));
 
             CreateMap<CarModel, Car>()
                 .ForMember(c => c.ThumbnailImage, cm => cm.Ignore())
-                .ForMember(c => c.Images, cm => cm.Ignore());
+                .ForMember(c => c.Images, cm => cm.Ignore())
+                .ForMember(c => c.Repairs, cm => cm.MapFrom(carModel => carModel.RepairModels));
+
+            CreateMap<Repair, RepairModel>()
+                .ReverseMap();
 
             CreateMap<IEnumerable<Image>, IEnumerable<string>>()
                 .ConvertUsing(new ImageBase64Resolver());
