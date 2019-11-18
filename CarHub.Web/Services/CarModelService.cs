@@ -87,7 +87,13 @@ namespace CarHub.Web.Services
         public async Task<IEnumerable<CarModel>> GetCarModelsAsync()
         {
             return _mapper.Map<List<Car>, List<CarModel>>(
-                (await _carRepository.GetAllAsync(includeProperties: "Images,ThumbnailImage")).ToList());
+                (await _carRepository.GetAllAsync(includeProperties: "Images,ThumbnailImage,Repairs")).ToList());
+        }
+
+        public async Task<CarModel> GetCarModelByIdAsync(int id)
+        {
+            return _mapper.Map<Car, CarModel>(
+                (await _carRepository.GetAllAsync(includeProperties: "Images,ThumbnailImage,Repairs")).SingleOrDefault(c => c.Id == id));
         }
     }
 }

@@ -10,8 +10,8 @@ namespace CarHub.Web.Mappings
         public MappingProfile()
         {
             CreateMap<Car, CarModel>()
-                .ForMember(cm => cm.Images, c => c.MapFrom(car => car.Images))
-                .ForMember(cm => cm.Thumbnail, c => c.MapFrom(car => car.ThumbnailImage))
+                .ForMember(cm => cm.ImageIds, c => c.MapFrom(car => car.Images))
+                .ForMember(cm => cm.ThumbnailId, c => c.MapFrom(car => car.ThumbnailImage))
                 .ForMember(cm => cm.RepairModels, c => c.MapFrom(car => car.Repairs));
 
             CreateMap<CarModel, Car>()
@@ -22,11 +22,11 @@ namespace CarHub.Web.Mappings
             CreateMap<Repair, RepairModel>()
                 .ReverseMap();
 
-            CreateMap<IEnumerable<Image>, IEnumerable<string>>()
-                .ConvertUsing(new ImageBase64Resolver());
+            CreateMap<IEnumerable<Image>, IEnumerable<int>>()
+                .ConvertUsing(new ImageIdResolver());
 
-            CreateMap<Thumbnail, string>()
-                .ConvertUsing(new ThumbnailBase64Resolver());
+            CreateMap<Thumbnail, int>()
+                .ConvertUsing(new ThumbnailIdResolver());
         }
     }
 }

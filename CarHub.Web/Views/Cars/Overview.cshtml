@@ -32,7 +32,8 @@
                     {
                         <tr>
                             <td>
-                                <img src="@carModel.Thumbnail" class="img rounded" style="height: 83px; width: 125px;" />
+                                @*<img src="@carModel.Thumbnail" class="img rounded" style="height: 83px; width: 125px;" />*@
+                                <img src="@Url.Action("GetThumbnail", "Cars", new { id = carModel.ThumbnailId })" class="img rounded" style="height: 83px; width: 125px;" />
                             </td>
                             <td>@carModel.Vin</td>
                             <td>@carModel.Year</td>
@@ -44,6 +45,8 @@
                             <td>@carModel.PurchasePrice</td>
                             <td>@carModel.SellingPrice</td>
                             <td>@carModel.SaleDate</td>
+                            <td>@string.Join(", ", carModel.RepairModels.Select(rm => rm.RepairDescription))</td>
+                            <td>@carModel.RepairModels.Sum(rm => rm.RepairCost)$</td>
                             <td>@carModel.ShowCase</td>
                         </tr>
                     }

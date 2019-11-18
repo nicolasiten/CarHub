@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CarHub.Core.Entities;
+using CarHub.Core.Interfaces;
 using CarHub.Web.Interfaces;
 using CarHub.Web.Models;
 using CarHub.Web.Utils.Alerts;
@@ -13,10 +16,14 @@ namespace CarHub.Web.Controllers
     public class CarsController : Controller
     {
         private readonly ICarModelService _carModelService;
+        private readonly IAsyncRepository<Image> _imageRepository;
+        private readonly IAsyncRepository<Thumbnail> _thumbnailRepository;
 
-        public CarsController(ICarModelService carModelService)
+        public CarsController(ICarModelService carModelService, IAsyncRepository<Image> imageRepository, IAsyncRepository<Thumbnail> thumbnailRepository)
         {
             _carModelService = carModelService;
+            _imageRepository = imageRepository;
+            _thumbnailRepository = thumbnailRepository;
         }
 
         public IActionResult Index()
@@ -28,6 +35,19 @@ namespace CarHub.Web.Controllers
         public IActionResult AddCar()
         {
             return View(new CarModel());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> EditCar(int id)
+        {
+            var car = await _carModelService.GetCarModelByIdAsync(id);
+
+            if (car == null)
+            {
+                return NotFound($"Car with id {id} not found.");
+            }
+
+            return View(car);
         }
 
         [Authorize]
@@ -56,6 +76,16 @@ namespace CarHub.Web.Controllers
         {
             var carModels = await _carModelService.GetCarModelsAsync();
             return View(carModels);
+        }
+
+        public async Task<FileStreamResult> GetImage(int id)
+        {
+            return new FileStreamResult(new MemoryStream((await _imageRepository.GetByIdAsync(id)).File), "image/jpg");
+        }
+
+        public async Task<FileStreamResult> GetThumbnail(int id)
+        {
+            return new FileStreamResult(new MemoryStream((await _thumbnailRepository.GetByIdAsync(id)).File), "image/jpg");
         }
 
         public IActionResult AddRepair()

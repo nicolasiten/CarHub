@@ -13,5 +13,7 @@ namespace CarHub.Web.Interfaces
         Task SaveCarModelAsync(CarModel carModel, IEnumerable<string> images);
 
         Task<IEnumerable<CarModel>> GetCarModelsAsync();
+
+        Task<CarModel> GetCarModelByIdAsync(int id);
     }
 }
