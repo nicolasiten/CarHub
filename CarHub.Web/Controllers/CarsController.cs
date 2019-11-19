@@ -78,6 +78,12 @@ namespace CarHub.Web.Controllers
             return View(carModels);
         }
 
+        [Authorize]
+        public async Task RemoveImage(int id)
+        {
+            await _imageRepository.DeleteAsync(id);
+        }
+
         public async Task<FileStreamResult> GetImage(int id)
         {
             return new FileStreamResult(new MemoryStream((await _imageRepository.GetByIdAsync(id)).File), "image/jpg");

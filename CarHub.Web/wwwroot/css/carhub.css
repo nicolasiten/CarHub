@@ -68,3 +68,7 @@ html.swal2-shown,
 body.swal2-shown {
     overflow-y: auto !important;
 }
+
+.btn {
+    margin: 10px;
+}
