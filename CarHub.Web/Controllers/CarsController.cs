@@ -52,6 +52,27 @@ namespace CarHub.Web.Controllers
 
         [Authorize]
         [HttpPost]
+        public async Task<IActionResult> EditCar(CarModel carModel)
+        {
+            IEnumerable<string> imageErrors = _carModelService.ValidateCarImages(Request.Form["images"]);
+
+            foreach (string error in imageErrors)
+            {
+                ModelState.AddModelError("", error);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(carModel);
+            }
+
+            await _carModelService.SaveCarModelAsync(carModel, Request.Form["images"]);
+
+            return RedirectToAction("EditCar").WithSuccess("Success", "Successfully saved Car.");
+        }
+
+        [Authorize]
+        [HttpPost]
         public async Task<IActionResult> AddCar(CarModel carModel)
         {
             IEnumerable<string> imageErrors = _carModelService.ValidateCarImages(Request.Form["images"]);
@@ -79,9 +100,21 @@ namespace CarHub.Web.Controllers
         }
 
         [Authorize]
-        public async Task RemoveImage(int id)
+        public async Task<IActionResult> RemoveImage(int id)
         {
             await _imageRepository.DeleteAsync(id);
+
+            return Json("Ok");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SetAsThumbnail(int thumbnailId, int imageId)
+        {
+            var thumbnail = await _thumbnailRepository.GetByIdAsync(thumbnailId);
+            thumbnail.File = (await _imageRepository.GetByIdAsync(imageId)).File;
+            await _thumbnailRepository.UpdateAsync(thumbnail);
+
+            return Json("Ok");
         }
 
         public async Task<FileStreamResult> GetImage(int id)

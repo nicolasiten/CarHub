@@ -69,7 +69,7 @@ namespace CarHub.Web.Services
             {
                 dynamic imageObject = JObject.Parse(image);
 
-                if (car.ThumbnailImage == null)
+                if (car.Id == 0 && car.ThumbnailImage == null)
                 {
                     car.ThumbnailImage = new Thumbnail { File = Convert.FromBase64String(imageObject.data.Value) };
                 }
@@ -80,8 +80,14 @@ namespace CarHub.Web.Services
                 });
             }
 
-
-            await _carRepository.AddAsync(car);
+            if (car.Id == 0)
+            {
+                await _carRepository.AddAsync(car);
+            }
+            else
+            {
+                await _carRepository.UpdateAsync(car);
+            }
         }
 
         public async Task<IEnumerable<CarModel>> GetCarModelsAsync()
