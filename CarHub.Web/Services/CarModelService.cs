@@ -26,24 +26,26 @@ namespace CarHub.Web.Services
         {
             List<string> errors = new List<string>();
 
-            if (images == null || !images.Any() || images.First() == string.Empty)
-            {
-                errors.Add("Add at least one image");
-            }
-            else
-            {
+            if (images != null)
+            { 
                 foreach (var image in images)
                 {
-                    dynamic imageObject = JObject.Parse(image);
-
-                    string type = ((string)imageObject.type).ToLower();
-                    if (!type.Contains("jpg") && !type.Contains("jpeg") && !type.Contains("png"))
+                    if (!string.IsNullOrEmpty(image))
                     {
-                        errors.Add("Images must be of type jpg or png.");
-                    }
-                    else if (int.TryParse(imageObject.size.Value.ToString(), out int imageSize) && imageSize > 5000000)
-                    {
-                        errors.Add("Images must be smaller than 5MB.");
+                        dynamic imageObject = JObject.Parse(image);
+                        
+                        if (!string.IsNullOrEmpty((string)imageObject.type) && imageObject.size != null && !string.IsNullOrEmpty(imageObject.size.Value.ToString()))
+                        {
+                            string type = ((string)imageObject.type).ToLower();
+                            if (!type.Contains("jpg") && !type.Contains("jpeg") && !type.Contains("png"))
+                            {
+                                errors.Add("Images must be of type jpg or png.");
+                            }
+                            else if (int.TryParse(imageObject.size.Value.ToString(), out int imageSize) && imageSize > 5000000)
+                            {
+                                errors.Add("Images must be smaller than 5MB.");
+                            }
+                        }
                     }
                 }
             }
@@ -65,19 +67,27 @@ namespace CarHub.Web.Services
 
             Car car = _mapper.Map<CarModel, Car>(carModel);
 
-            foreach (var image in images)
+            foreach (string image in images)
             {
-                dynamic imageObject = JObject.Parse(image);
-
-                if (car.Id == 0 && car.ThumbnailImage == null)
+                if (!string.IsNullOrEmpty(image))
                 {
-                    car.ThumbnailImage = new Thumbnail { File = Convert.FromBase64String(imageObject.data.Value) };
+                    dynamic imageObject = JObject.Parse(image);
+
+                    if (imageObject.data != null && !string.IsNullOrEmpty(imageObject.data.Value))
+                    {
+                        byte[] file = Convert.FromBase64String(imageObject.data.Value);
+
+                        if (car.Id == 0 && car.ThumbnailImage == null)
+                        {
+                            car.ThumbnailImage = new Thumbnail { File = file };
+                        }
+
+                        car.Images.Add(new Image
+                        {
+                            File = file
+                        });
+                    }
                 }
-
-                car.Images.Add(new Image
-                {
-                    File = Convert.FromBase64String(imageObject.data.Value)
-                });
             }
 
             if (car.Id == 0)

@@ -15,32 +15,44 @@
 
             <partial name="_CarEditor" />
 
-            <div class="form-group rounded" style="border: solid 1px #dee2e6; padding: 5px;">
-                <h5 class="text-center">Thumbnail</h5>
-                <div class="row justify-content-center">
-                    <input type="hidden" asp-for="@Model.ThumbnailId" />
-                    <img src="@Url.Action("GetThumbnail", "Cars", new { id = @Model.ThumbnailId })" class="rounded car-thumbnail" style="height: 83px; width: 125px;" />
-                </div>
-                <div class="row" style="margin-top: 20px;">
-                    <h5 class="text-center col-12">Images</h5>
+            @if (Model.ImageIds.Any() || (Model.ThumbnailId.HasValue && Model.ThumbnailId.Value > 0))
+            {
+                <div class="form-group rounded" style="border: solid 1px #dee2e6; padding: 5px;">
+                    <h5 class="text-center">Thumbnail</h5>
+                    <div class="row justify-content-center">
+                        <input type="hidden" asp-for="@Model.ThumbnailId" />
+                        @if (Model.ThumbnailId.HasValue && Model.ThumbnailId.Value > 0)
+                        {
+                            <img src="@Url.Action("GetThumbnail", "Cars", new { id = @Model.ThumbnailId })" class="rounded car-thumbnail" style="height: 83px; width: 125px;" />
+                        }
+                        else
+                        {
+                            <img src="~/images/no-image-availabe.jpg" class="rounded car-thumbnail" style="height: 83px; width: 125px;" />
+                        }
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <h5 class="text-center col-12">Images</h5>
 
-                    @for (int i = 0; i < Model.ImageIds.Count(); i++)
-                    {
-                        <input type="hidden" asp-for="@Model.ImageIds[i]" />
-                        <div class="col-4 car-image">
-                            <img src="@Url.Action("GetImage", "Cars", new {id = @Model.ImageIds[i]})" class="img rounded" style="width: 100%;" />
-                            <div class="row justify-content-center">
-                                <a asp-controller="Cars" asp-action="SetAsThumbnail" onclick="return confirmThumbnailUpdate(this);" asp-route-thumbnailId="@Model.ThumbnailId" asp-route-imageId="@Model.ImageIds[i]">
-                                    <button type="button" class="btn btn-primary">Thumbnail</button>
-                                </a>
-                                <a asp-controller="Cars" asp-action="RemoveImage" onclick="return confirmDelete(this);" asp-route-id="@Model.ImageIds[i]">
-                                    <button type="button" class="btn btn-danger">Remove</button>
-                                </a>
+                        @for (int i = 0; i < Model.ImageIds.Count(); i++)
+                        {
+                            <input type="hidden" asp-for="@Model.ImageIds[i]" />
+                            <div class="col-4 car-image">
+                                <img src="@Url.Action("GetImage", "Cars", new {id = @Model.ImageIds[i]})" class="img rounded" style="width: 100%;" />
+                                <div class="row justify-content-center">
+                                    <a asp-controller="Cars" asp-action="SetAsThumbnail" onclick="return confirmThumbnailUpdate(this);" 
+                                       asp-route-thumbnailId="@Model.ThumbnailId" asp-route-imageId="@Model.ImageIds[i]" asp-route-carId="@Model.Id">
+                                        <button type="button" class="btn btn-primary">Thumbnail</button>
+                                    </a>
+                                    <a asp-controller="Cars" asp-action="RemoveImage" onclick="return confirmDelete(this);" asp-route-id="@Model.ImageIds[i]">
+                                        <button type="button" class="btn btn-danger">Remove</button>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
+            }
+
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>

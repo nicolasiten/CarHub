@@ -54,42 +54,14 @@ namespace CarHub.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditCar(CarModel carModel)
         {
-            IEnumerable<string> imageErrors = _carModelService.ValidateCarImages(Request.Form["images"]);
-
-            foreach (string error in imageErrors)
-            {
-                ModelState.AddModelError("", error);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(carModel);
-            }
-
-            await _carModelService.SaveCarModelAsync(carModel, Request.Form["images"]);
-
-            return RedirectToAction("EditCar").WithSuccess("Success", "Successfully saved Car.");
+            return await SaveCar(carModel, "EditCar");
         }
 
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddCar(CarModel carModel)
         {
-            IEnumerable<string> imageErrors = _carModelService.ValidateCarImages(Request.Form["images"]);
-
-            foreach (string error in imageErrors)
-            {
-                ModelState.AddModelError("", error);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(carModel);
-            }
-
-            await _carModelService.SaveCarModelAsync(carModel, Request.Form["images"]);
-
-            return RedirectToAction("Overview").WithSuccess("Success", "Successfully saved Car.");
+            return await SaveCar(carModel, "Overview");
         }
 
         [Authorize]
@@ -108,11 +80,27 @@ namespace CarHub.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> SetAsThumbnail(int thumbnailId, int imageId)
+        public async Task<IActionResult> SetAsThumbnail(int thumbnailId, int imageId, int carId)
         {
+            if (thumbnailId == 0)
+            {
+                // try to fetch id from db
+                var carModel = await _carModelService.GetCarModelByIdAsync(carId);
+                thumbnailId = carModel.ThumbnailId.HasValue ? carModel.ThumbnailId.Value : 0;
+            }
+
             var thumbnail = await _thumbnailRepository.GetByIdAsync(thumbnailId);
-            thumbnail.File = (await _imageRepository.GetByIdAsync(imageId)).File;
-            await _thumbnailRepository.UpdateAsync(thumbnail);
+            byte[] file = (await _imageRepository.GetByIdAsync(imageId)).File;
+
+            if (thumbnail != null)
+            {
+                thumbnail.File = file;
+                await _thumbnailRepository.UpdateAsync(thumbnail);
+            }
+            else
+            {
+                await _thumbnailRepository.AddAsync(new Thumbnail { CarFk = carId, File = file });
+            }
 
             return Json("Ok");
         }
@@ -130,6 +118,25 @@ namespace CarHub.Web.Controllers
         public IActionResult AddRepair()
         {
             return PartialView("_RepairRow", new RepairModel());
+        }
+
+        private async Task<IActionResult> SaveCar(CarModel carModel, string redirectAction)
+        {
+            IEnumerable<string> imageErrors = _carModelService.ValidateCarImages(Request.Form["images"]);
+
+            foreach (string error in imageErrors)
+            {
+                ModelState.AddModelError("", error);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(carModel);
+            }
+
+            await _carModelService.SaveCarModelAsync(carModel, Request.Form["images"]);
+
+            return RedirectToAction(redirectAction).WithSuccess("Success", "Successfully saved Car.");
         }
     }
 }

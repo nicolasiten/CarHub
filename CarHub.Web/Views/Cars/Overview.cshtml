@@ -32,8 +32,14 @@
                     {
                         <tr>
                             <td>
-                                @*<img src="@carModel.Thumbnail" class="img rounded" style="height: 83px; width: 125px;" />*@
-                                <img src="@Url.Action("GetThumbnail", "Cars", new { id = carModel.ThumbnailId })" class="img rounded" style="height: 83px; width: 125px;" />
+                                @if(carModel.ThumbnailId.HasValue && carModel.ThumbnailId.Value > 0)
+                                {
+                                    <img src="@Url.Action("GetThumbnail", "Cars", new { id = carModel.ThumbnailId })" class="img rounded" style="height: 83px; width: 125px;" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/no-image-availabe.jpg" class="img rounded" style="height: 83px; width: 125px;" />
+                                }
                             </td>
                             <td>@carModel.Vin</td>
                             <td>@carModel.Year</td>

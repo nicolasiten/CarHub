@@ -64,6 +64,6 @@ namespace CarHub.Web.Models
 
         public IList<int> ImageIds { get; set; }
 
-        public int ThumbnailId { get; set; }
+        public int? ThumbnailId { get; set; }
     }
 }
