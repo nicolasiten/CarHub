@@ -18,12 +18,18 @@ namespace CarHub.Web.Controllers
         private readonly ICarModelService _carModelService;
         private readonly IAsyncRepository<Image> _imageRepository;
         private readonly IAsyncRepository<Thumbnail> _thumbnailRepository;
+        private readonly IImageService _imageService;
 
-        public CarsController(ICarModelService carModelService, IAsyncRepository<Image> imageRepository, IAsyncRepository<Thumbnail> thumbnailRepository)
+        public CarsController(
+            ICarModelService carModelService, 
+            IAsyncRepository<Image> imageRepository, 
+            IAsyncRepository<Thumbnail> thumbnailRepository,
+            IImageService imageService)
         {
             _carModelService = carModelService;
             _imageRepository = imageRepository;
             _thumbnailRepository = thumbnailRepository;
+            _imageService = imageService;
         }
 
         public IActionResult Index()
@@ -80,27 +86,9 @@ namespace CarHub.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> SetAsThumbnail(int thumbnailId, int imageId, int carId)
+        public async Task<IActionResult> SetAsThumbnail(int imageId, int carId)
         {
-            if (thumbnailId == 0)
-            {
-                // try to fetch id from db
-                var carModel = await _carModelService.GetCarModelByIdAsync(carId);
-                thumbnailId = carModel.ThumbnailId.HasValue ? carModel.ThumbnailId.Value : 0;
-            }
-
-            var thumbnail = await _thumbnailRepository.GetByIdAsync(thumbnailId);
-            byte[] file = (await _imageRepository.GetByIdAsync(imageId)).File;
-
-            if (thumbnail != null)
-            {
-                thumbnail.File = file;
-                await _thumbnailRepository.UpdateAsync(thumbnail);
-            }
-            else
-            {
-                await _thumbnailRepository.AddAsync(new Thumbnail { CarFk = carId, File = file });
-            }
+            await _imageService.SetNewThumbnailAsync(imageId, carId);
 
             return Json("Ok");
         }

@@ -40,7 +40,7 @@
                                 <img src="@Url.Action("GetImage", "Cars", new {id = @Model.ImageIds[i]})" class="img rounded" style="width: 100%;" />
                                 <div class="row justify-content-center">
                                     <a asp-controller="Cars" asp-action="SetAsThumbnail" onclick="return confirmThumbnailUpdate(this);" 
-                                       asp-route-thumbnailId="@Model.ThumbnailId" asp-route-imageId="@Model.ImageIds[i]" asp-route-carId="@Model.Id">
+                                       asp-route-imageId="@Model.ImageIds[i]" asp-route-carId="@Model.Id">
                                         <button type="button" class="btn btn-primary">Thumbnail</button>
                                     </a>
                                     <a asp-controller="Cars" asp-action="RemoveImage" onclick="return confirmDelete(this);" asp-route-id="@Model.ImageIds[i]">

@@ -17,6 +17,7 @@ using CarHub.Core.Interfaces;
 using CarHub.Web.Interfaces;
 using CarHub.Web.Services;
 using AutoMapper;
+using CarHub.Core.Services;
 
 namespace CarHub.Web
 {
@@ -43,6 +44,7 @@ namespace CarHub.Web
 
             // services
             services.AddScoped<ICarModelService, CarModelService>();
+            services.AddScoped<IImageService, ImageService>();
 
             services.AddAutoMapper(typeof(Startup));
 
