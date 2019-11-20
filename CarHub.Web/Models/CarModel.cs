@@ -62,7 +62,7 @@ namespace CarHub.Web.Models
 
         public IEnumerable<RepairModel> RepairModels { get; set; }
 
-        public IEnumerable<int> ImageIds { get; set; }
+        public IList<int> ImageIds { get; set; }
 
         public int ThumbnailId { get; set; }
     }

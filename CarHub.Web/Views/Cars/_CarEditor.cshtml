@@ -1,0 +1,85 @@
+﻿@model CarModel
+
+<div asp-validation-summary="All" class="text-danger"></div>
+<input type="hidden" asp-for="@Model.Id" />
+<div class="form-group">
+    <label asp-for="@Model.Vin"></label>
+    <input asp-for="@Model.Vin" class="form-control" />
+    <span asp-validation-for="@Model.Vin" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Year"></label>
+    <input asp-for="@Model.Year" class="form-control" />
+    <span asp-validation-for="@Model.Year" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Make"></label>
+    <input asp-for="@Model.Make" class="form-control" />
+    <span asp-validation-for="@Model.Make" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Model"></label>
+    <input asp-for="@Model.Model" class="form-control" />
+    <span asp-validation-for="@Model.Model" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Trim"></label>
+    <input asp-for="@Model.Trim" class="form-control" />
+    <span asp-validation-for="@Model.Trim" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.PurchaseDate"></label>
+    <input asp-for="@Model.PurchaseDate" class="form-control" />
+    <span asp-validation-for="@Model.PurchaseDate" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.LotDate"></label>
+    <input asp-for="@Model.LotDate" class="form-control" />
+    <span asp-validation-for="@Model.LotDate" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.PurchasePrice"></label>
+    <input asp-for="@Model.PurchasePrice" class="form-control" />
+    <span asp-validation-for="@Model.PurchasePrice" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.SellingPrice"></label>
+    <input asp-for="@Model.SellingPrice" class="form-control" />
+    <span asp-validation-for="@Model.SellingPrice" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.ShowCase"></label>
+    <input asp-for="@Model.ShowCase" class="form-control" />
+    <span asp-validation-for="@Model.ShowCase" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label>Add Repairs</label>
+    <table id="edit-rows" class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Repair Description</th>
+                <th scope="col">Repair Cost</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var repairModel in Model.RepairModels)
+            {
+                await Html.RenderPartialAsync("_RepairRow", repairModel);
+            }
+        </tbody>
+    </table>
+    <div class="text-right">
+        <a asp-action="AddRepair" id="add-item">Add New Repair</a>
+    </div>
+</div>
+<div class="form-group">
+    <label>Upload images</label>
+    <input type="file"
+           class="filepond"
+           id="images"
+           name="images"
+           multiple
+           data-max-file-size="5MB"
+           data-max-files="10">
+</div>

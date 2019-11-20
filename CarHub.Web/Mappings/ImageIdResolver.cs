@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace CarHub.Web.Mappings
 {
-    public class ImageIdResolver : ITypeConverter<IEnumerable<Image>, IEnumerable<int>>
+    public class ImageIdResolver : ITypeConverter<IEnumerable<Image>, IList<int>>
     {
-        public IEnumerable<int> Convert(IEnumerable<Image> source, IEnumerable<int> destination, ResolutionContext context)
+        public IList<int> Convert(IEnumerable<Image> source, IList<int> destination, ResolutionContext context)
         {
-            return source.Select(s => s.Id);
+            return source.Select(s => s.Id).ToList();
         }
     }
 }

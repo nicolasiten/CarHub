@@ -22,7 +22,7 @@ namespace CarHub.Web.Mappings
             CreateMap<Repair, RepairModel>()
                 .ReverseMap();
 
-            CreateMap<IEnumerable<Image>, IEnumerable<int>>()
+            CreateMap<IEnumerable<Image>, IList<int>>()
                 .ConvertUsing(new ImageIdResolver());
 
             CreateMap<Thumbnail, int>()
