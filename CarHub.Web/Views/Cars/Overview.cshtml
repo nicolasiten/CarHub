@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CarModel>
+﻿@using CarHub.Web.Utils
+@model IEnumerable<CarModel>
 @{
     ViewData["Title"] = "Overview";
 }
@@ -8,60 +9,64 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <table id="cars" class="overview-table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Vin</th>
-                        <th scope="col">Year</th>
-                        <th scope="col">Make</th>
-                        <th scope="col">Model</th>
-                        <th scope="col">Trim</th>
-                        <th scope="col">Kilometers</th>
-                        <th scope="col">TransmissionType</th>
-                        <th scope="col">PurchaseDate</th>
-                        <th scope="col">LotDate</th>
-                        <th scope="col">PurchasePrice</th>
-                        <th scope="col">SellingPrice</th>
-                        <th scope="col">SaleDate</th>
-                        <th scope="col">Repair</th>
-                        <th scope="col">RepairCost</th>
-                        <th scope="col">ShowCase</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (CarModel carModel in Model)
-                    {
+            <div style="overflow-x">
+                <table id="cars" class="overview-table table-bordered no-gutters flex-wrap">
+                    <thead>
                         <tr>
-                            <td>
-                                @if(carModel.ThumbnailId.HasValue && carModel.ThumbnailId.Value > 0)
-                                {
-                                    <img src="@Url.Action("GetThumbnail", "Cars", new { id = carModel.ThumbnailId })" class="img rounded" style="height: 83px; width: 125px;" />
-                                }
-                                else
-                                {
-                                    <img src="~/images/no-image-availabe.jpg" class="img rounded" style="height: 83px; width: 125px;" />
-                                }
-                            </td>
-                            <td>@carModel.Vin</td>
-                            <td>@carModel.Year</td>
-                            <td>@carModel.Make</td>
-                            <td>@carModel.Make</td>
-                            <td>@carModel.Trim</td>
-                            <td>@carModel.Kilometers</td>
-                            <td>@carModel.TransmissionType</td>
-                            <td>@carModel.PurchaseDate.ToShortDateString()</td>
-                            <td>@carModel.LotDate.ToShortDateString()</td>
-                            <td>@carModel.PurchasePrice</td>
-                            <td>@carModel.SellingPrice</td>
-                            <td>@carModel.SaleDate</td>
-                            <td>@string.Join(", ", carModel.RepairModels.Select(rm => rm.RepairDescription))</td>
-                            <td>@carModel.RepairModels.Sum(rm => rm.RepairCost)$</td>
-                            <td>@carModel.ShowCase</td>
+                            <th scope="col"></th>
+                            <th scope="col">Details</th>
+                            <th scope="col">Purchase Date</th>
+                            <th scope="col">LotDate</th>
+                            <th scope="col">Purchase $</th>
+                            <th scope="col">Selling $</th>
+                            <th scope="col">SaleDate</th>
+                            <th scope="col">Repair</th>
+                            <th scope="col">RepairCost</th>
+                            <th scope="col">ShowCase</th>
+                            <th scope="col"></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (CarModel carModel in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @if (carModel.ThumbnailId.HasValue && carModel.ThumbnailId.Value > 0)
+                                    {
+                                        <img src="@Url.Action("GetThumbnail", "Cars", new { id = carModel.ThumbnailId })" class="img rounded" style="height: 83px; width: 125px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/no-image-availabe.jpg" class="img rounded" style="height: 83px; width: 125px;" />
+                                    }
+                                </td>
+                                <td style="white-space: nowrap;">
+                                    <p><b>VIN</b> @carModel.Vin</p>
+                                    <p><b>Year</b> @carModel.Year</p>
+                                    <p><b>Make</b> @carModel.Make</p>
+                                    <p><b>Model</b> @carModel.Model</p>
+                                    <p><b>Trim</b> @carModel.Trim</p>
+                                    <p><b>Kilometers</b> @carModel.Kilometers</p>
+                                    <p><b>Transmission</b> @carModel.TransmissionType</p>
+                                </td>
+                                <td>@carModel.PurchaseDate.ToShortDateString()</td>
+                                <td>@carModel.LotDate.ToShortDateString()</td>
+                                <td>@carModel.PurchasePrice</td>
+                                <td>@carModel.SellingPrice</td>
+                                <td>@carModel.SaleDate</td>
+                                <td>@string.Join(", ", carModel.RepairModels.Select(rm => rm.RepairDescription))</td>
+                                <td>@carModel.RepairModels.Sum(rm => rm.RepairCost)$</td>
+                                <td>@carModel.ShowCase</td>
+                                <td>
+                                    <a asp-controller="Cars" asp-action="EditCar" asp-route-id="@carModel.Id">
+                                        <button class="btn btn-primary">Edit</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
