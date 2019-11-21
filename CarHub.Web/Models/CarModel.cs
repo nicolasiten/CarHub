@@ -1,5 +1,5 @@
-﻿using CarHub.Web.Attributes;
-using Microsoft.AspNetCore.Http;
+﻿using CarHub.Core.Enums;
+using CarHub.Web.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -37,6 +37,14 @@ namespace CarHub.Web.Models
 
         [Required]
         public string Trim { get; set; }
+
+        [Required]
+        [Range(0, int.MaxValue)]
+        public int Kilometers { get; set; }
+
+        [Required]
+        [EnumDataType(typeof(TransmissionType))]
+        public TransmissionType TransmissionType { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

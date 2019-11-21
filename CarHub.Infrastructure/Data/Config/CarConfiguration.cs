@@ -25,6 +25,12 @@ namespace CarHub.Infrastructure.Data.Config
             builder.Property(c => c.Trim)
                 .IsRequired();
 
+            builder.Property(c => c.Kilometers)
+                .IsRequired();
+
+            builder.Property(c => c.TransmissionType)
+                .IsRequired();
+
             builder.Property(c => c.PurchaseDate)
                 .IsRequired()
                 .HasColumnType("datetime2");

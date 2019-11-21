@@ -1,4 +1,5 @@
-﻿@model CarModel
+﻿@using CarHub.Core.Enums
+@model CarModel
 
 <div asp-validation-summary="All" class="text-danger"></div>
 <input type="hidden" asp-for="@Model.Id" />
@@ -26,6 +27,16 @@
     <label asp-for="@Model.Trim"></label>
     <input asp-for="@Model.Trim" class="form-control" />
     <span asp-validation-for="@Model.Trim" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Kilometers"></label>
+    <input asp-for="@Model.Kilometers" class="form-control" />
+    <span asp-validation-for="@Model.Kilometers" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.TransmissionType"></label>
+    <select class="form-control" asp-for="@Model.TransmissionType" asp-items="Html.GetEnumSelectList<TransmissionType>()">
+    </select>
 </div>
 <div class="form-group">
     <label asp-for="@Model.PurchaseDate"></label>

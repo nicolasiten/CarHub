@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarHub.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,6 +22,10 @@ namespace CarHub.Core.Entities
         public string Model { get; set; }
 
         public string Trim { get; set; }
+
+        public int Kilometers { get; set; }
+
+        public TransmissionType TransmissionType { get; set; }
 
         public DateTime PurchaseDate { get; set; }
 
