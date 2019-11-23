@@ -10,6 +10,8 @@ namespace CarHub.Core.Entities
 
         public byte[] File { get; set; }
 
+        public string ImageType { get; set; }
+
         public virtual Car Car { get; set; }
     }
 }

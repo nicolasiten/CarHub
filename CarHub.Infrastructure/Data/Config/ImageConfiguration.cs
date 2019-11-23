@@ -7,19 +7,11 @@ using System.Text;
 
 namespace CarHub.Infrastructure.Data.Config
 {
-    public class ImageConfiguration : IEntityTypeConfiguration<Image>
+    public class ImageConfiguration : FileDataConfiguration<Image>
     {
-        public void Configure(EntityTypeBuilder<Image> builder)
+        public override void Configure(EntityTypeBuilder<Image> builder)
         {
-            builder.HasKey(t => t.Id);
-
-            builder.Property(t => t.CarFk);
-
-            builder.Property(t => t.File)
-                .HasColumnType("image")
-                .IsRequired();
-
-            builder.HasIndex(r => r.CarFk);
+            base.Configure(builder);
 
             builder.HasOne(t => t.Car)
                 .WithMany(c => c.Images)

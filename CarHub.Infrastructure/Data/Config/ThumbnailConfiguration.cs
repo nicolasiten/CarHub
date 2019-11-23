@@ -7,19 +7,11 @@ using System.Text;
 
 namespace CarHub.Infrastructure.Data.Config
 {
-    public class ThumbnailConfiguration : IEntityTypeConfiguration<Thumbnail>
+    public class ThumbnailConfiguration : FileDataConfiguration<Thumbnail>
     {
-        public void Configure(EntityTypeBuilder<Thumbnail> builder)
+        public override void Configure(EntityTypeBuilder<Thumbnail> builder)
         {
-            builder.HasKey(t => t.Id);
-
-            builder.Property(t => t.CarFk);
-
-            builder.Property(t => t.File)
-                .HasColumnType("image")
-                .IsRequired();
-
-            builder.HasIndex(r => r.CarFk);
+            base.Configure(builder);
 
             builder.HasOne(t => t.Car)
                 .WithOne(c => c.ThumbnailImage)

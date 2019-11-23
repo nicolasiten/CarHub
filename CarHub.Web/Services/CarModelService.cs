@@ -40,9 +40,9 @@ namespace CarHub.Web.Services
                         if (!string.IsNullOrEmpty((string)imageObject.type) && imageObject.size != null && !string.IsNullOrEmpty(imageObject.size.Value.ToString()))
                         {
                             string type = ((string)imageObject.type).ToLower();
-                            if (!type.Contains("jpg") && !type.Contains("jpeg") && !type.Contains("png"))
+                            if (!ConfigurationConstants.SupportedImageFormats.Any(i => type.Contains(i)))
                             {
-                                errors.Add("Images must be of type jpg or png.");
+                                errors.Add($"Images must be of type {string.Join(" or ", ConfigurationConstants.SupportedImageFormats)}.");
                             }
                             else if (int.TryParse(imageObject.size.Value.ToString(), out int imageSize) && imageSize > 5000000)
                             {
@@ -79,15 +79,21 @@ namespace CarHub.Web.Services
                     if (imageObject.data != null && !string.IsNullOrEmpty(imageObject.data.Value))
                     {
                         byte[] file = Convert.FromBase64String(imageObject.data.Value);
+                        string imageType = (string)imageObject.type;
 
                         if (car.Id == 0 && car.ThumbnailImage == null)
                         {
-                            car.ThumbnailImage = new Thumbnail { File = _imageService.ResizeImage(file, ConfigurationConstants.ThumnbailWidth, ConfigurationConstants.ThumbnailHeight) };
+                            car.ThumbnailImage = new Thumbnail
+                            {
+                                File = _imageService.ResizeImage(file, ConfigurationConstants.ThumnbailWidth, ConfigurationConstants.ThumbnailHeight, imageType),
+                                ImageType = imageType
+                            };
                         }
 
                         car.Images.Add(new Image
                         {
-                            File = file
+                            File = file,
+                            ImageType = imageType
                         });
                     }
                 }

@@ -17,34 +17,44 @@ namespace CarHub.Core.Services
         private readonly IAsyncRepository<Car> _carRepository;
         private readonly IAsyncRepository<Entities.Image> _imageRepository;
         private readonly IAsyncRepository<Thumbnail> _thumbnailRepository;
+        private readonly IImageFormatResolver _imageFormatResolver;
 
         public ImageService(
             IAsyncRepository<Car> carRepository, 
             IAsyncRepository<Entities.Image> imageRepository, 
-            IAsyncRepository<Thumbnail> thumbnailRepository)
+            IAsyncRepository<Thumbnail> thumbnailRepository,
+            IImageFormatResolver imageFormatResolver)
         {
             _carRepository = carRepository;
             _imageRepository = imageRepository;
             _thumbnailRepository = thumbnailRepository;
+            _imageFormatResolver = imageFormatResolver;
         }
 
         public async Task SetNewThumbnailAsync(int imageId, int carId)
         {
             var thumbnail = (await _thumbnailRepository.GetAllAsync(t => t.CarFk == carId)).SingleOrDefault();
-            byte[] file = (await _imageRepository.GetByIdAsync(imageId)).File;
+            Entities.Image image = await _imageRepository.GetByIdAsync(imageId);
+            byte[] file = ResizeImage(image.File, ConfigurationConstants.ThumnbailWidth, ConfigurationConstants.ThumbnailHeight, image.ImageType);
 
             if (thumbnail != null)
             {
-                thumbnail.File = ResizeImage(file, ConfigurationConstants.ThumnbailWidth, ConfigurationConstants.ThumbnailHeight);
+                thumbnail.File = file;
+                thumbnail.ImageType = image.ImageType;
                 await _thumbnailRepository.UpdateAsync(thumbnail);
             }
             else
             {
-                await _thumbnailRepository.AddAsync(new Thumbnail { CarFk = carId, File = file });
+                await _thumbnailRepository.AddAsync(new Thumbnail
+                {
+                    CarFk = carId,
+                    File = file,
+                    ImageType = image.ImageType
+                });
             }
         }
 
-        public byte[] ResizeImage(byte[] image, int width, int height)
+        public byte[] ResizeImage(byte[] image, int width, int height, string imageType)
         {
             Bitmap startBitmap = ByteArrayToBitmap(image);
             Bitmap newBitmap = new Bitmap(width, height);
@@ -53,7 +63,7 @@ namespace CarHub.Core.Services
                 graphics.DrawImage(startBitmap, 0, 0, width, height);
             }
 
-            return BitmapToByteArray(newBitmap);
+            return BitmapToByteArray(newBitmap, imageType);
         }
 
         private Bitmap ByteArrayToBitmap(byte[] imageArray)
@@ -68,11 +78,11 @@ namespace CarHub.Core.Services
             return bitmap;
         }
 
-        private byte[] BitmapToByteArray(Bitmap bitmap)
+        private byte[] BitmapToByteArray(Bitmap bitmap, string imageType)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                bitmap.Save(memoryStream, ImageFormat.Jpeg);
+                bitmap.Save(memoryStream, _imageFormatResolver.Resolve(imageType));
                 return memoryStream.ToArray();
             }
         }
