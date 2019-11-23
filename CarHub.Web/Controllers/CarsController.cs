@@ -32,9 +32,13 @@ namespace CarHub.Web.Controllers
             _imageService = imageService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var carModels = (await _carModelService.GetCarModelsAsync())
+                .Where(cm => cm.ShowCase || cm.SaleDate == null)
+                .OrderByDescending(cm => cm.LotDate).ToList();
+
+            return View(carModels);
         }
 
         [Authorize]

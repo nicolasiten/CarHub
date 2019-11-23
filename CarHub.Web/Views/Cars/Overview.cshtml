@@ -31,14 +31,7 @@
                         {
                             <tr>
                                 <td>
-                                    @if (carModel.ThumbnailId.HasValue && carModel.ThumbnailId.Value > 0)
-                                    {
-                                        <img src="@Url.Action("GetThumbnail", "Cars", new { id = carModel.ThumbnailId })" class="img rounded" style="height: 83px; width: 125px;" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/images/no-image-availabe.jpg" class="img rounded" style="height: 83px; width: 125px;" />
-                                    }
+                                    <img src="@Url.ResolveThumbnailSrc(carModel)" class="img rounded" style="height: 83px; width: 125px;" />
                                 </td>
                                 <td style="white-space: nowrap;">
                                     <p><b>VIN</b> @carModel.Vin</p>
@@ -61,6 +54,7 @@
                                     <a asp-controller="Cars" asp-action="EditCar" asp-route-id="@carModel.Id">
                                         <button class="btn btn-primary">Edit</button>
                                     </a>
+                                    <button class="btn btn-success" onclick="setSaleDate()">Sold</button>
                                 </td>
                             </tr>
                         }
@@ -76,5 +70,19 @@
         $(document).ready(function () {
             $('#cars').DataTable();
         });
+
+        
+        function setSaleDate() {
+            swal.fire({
+                title: "Sale Date",
+                html: '<input id="datetimepicker" type="date" class="form-control" autofocus>',
+                type: "question",
+                onOpen: function () {
+                    var date = new Date();
+                    var currentDate = date.toISOString().slice(0, 10);
+                    document.getElementById('datetimepicker').value = currentDate;
+                }
+            });
+        }
     </script>
 }
