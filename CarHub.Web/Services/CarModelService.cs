@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CarHub.Core.Constants;
 using CarHub.Core.Entities;
 using CarHub.Core.Interfaces;
 using CarHub.Web.Interfaces;
@@ -15,11 +16,13 @@ namespace CarHub.Web.Services
     {
         private readonly IAsyncRepository<Car> _carRepository;
         private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
 
-        public CarModelService(IAsyncRepository<Car> carRepository, IMapper mapper)
+        public CarModelService(IAsyncRepository<Car> carRepository, IMapper mapper, IImageService imageService)
         {
             _carRepository = carRepository;
             _mapper = mapper;
+            _imageService = imageService;
         }
 
         public IEnumerable<string> ValidateCarImages(IEnumerable<string> images)
@@ -79,7 +82,7 @@ namespace CarHub.Web.Services
 
                         if (car.Id == 0 && car.ThumbnailImage == null)
                         {
-                            car.ThumbnailImage = new Thumbnail { File = file };
+                            car.ThumbnailImage = new Thumbnail { File = _imageService.ResizeImage(file, ConfigurationConstants.ThumnbailWidth, ConfigurationConstants.ThumbnailHeight) };
                         }
 
                         car.Images.Add(new Image
