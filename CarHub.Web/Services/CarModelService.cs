@@ -37,10 +37,17 @@ namespace CarHub.Web.Services
                     {
                         dynamic imageObject = JObject.Parse(image);
                         
-                        if (!string.IsNullOrEmpty((string)imageObject.type) && imageObject.size != null && !string.IsNullOrEmpty(imageObject.size.Value.ToString()))
+                        if (imageObject.data != null && !string.IsNullOrEmpty(imageObject.data.Value) 
+                            && !string.IsNullOrEmpty((string)imageObject.type) 
+                            && imageObject.size != null && !string.IsNullOrEmpty(imageObject.size.Value.ToString()))
                         {
                             string type = ((string)imageObject.type).ToLower();
-                            if (!ConfigurationConstants.SupportedImageFormats.Any(i => type.Contains(i)))
+
+                            if (!_imageService.IsImage(Convert.FromBase64String(imageObject.data.Value)))
+                            {
+                                errors.Add($"Uploaded files must be images!");
+                            }                            
+                            else if (!ConfigurationConstants.SupportedImageFormats.Any(i => type.Contains(i)))
                             {
                                 errors.Add($"Images must be of type {string.Join(" or ", ConfigurationConstants.SupportedImageFormats)}.");
                             }

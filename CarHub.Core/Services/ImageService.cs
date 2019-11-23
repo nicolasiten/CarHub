@@ -54,6 +54,22 @@ namespace CarHub.Core.Services
             }
         }
 
+        public bool IsImage(byte[] imageArray)
+        {
+            using (MemoryStream memoryStream = new MemoryStream(imageArray))
+            {
+                try
+                {
+                    _ = Bitmap.FromStream(memoryStream);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
         public byte[] ResizeImage(byte[] image, int width, int height, string imageType)
         {
             Bitmap startBitmap = ByteArrayToBitmap(image);

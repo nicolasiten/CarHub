@@ -9,6 +9,8 @@ namespace CarHub.Core.Interfaces
     {
         Task SetNewThumbnailAsync(int imageId, int carId);
 
+        bool IsImage(byte[] imageArray);
+
         byte[] ResizeImage(byte[] image, int width, int height, string imageType);
     }
 }
