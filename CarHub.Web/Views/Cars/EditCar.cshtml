@@ -17,6 +17,7 @@
                     <h5 class="text-center">Thumbnail</h5>
                     <div class="row justify-content-center">
                         <input type="hidden" asp-for="@Model.ThumbnailId" />
+                        <input type="hidden" asp-for="@Model.SaleDate" />
                         @if (Model.ThumbnailId.HasValue && Model.ThumbnailId.Value > 0)
                         {
                             <img src="@Url.Action("GetThumbnail", "Cars", new { id = @Model.ThumbnailId })" class="rounded car-thumbnail" style="height: 83px; width: 125px;" />

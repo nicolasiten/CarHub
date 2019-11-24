@@ -23,6 +23,8 @@ namespace CarHub.Core.Entities
 
         public string Trim { get; set; }
 
+        public string Description { get; set; }
+
         public int Kilometers { get; set; }
 
         public TransmissionType TransmissionType { get; set; }

@@ -40,7 +40,7 @@
                             </div>
                         }
                     </div>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p class="card-text">@(carModel.Description.Length > 200 ? $"{carModel.Description.Substring(0, 200)}..." : carModel.Description)</p>
                 </div>
             </div>
         </div>

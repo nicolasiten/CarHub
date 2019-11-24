@@ -39,6 +39,9 @@ namespace CarHub.Web.Models
         public string Trim { get; set; }
 
         [Required]
+        public string Description { get; set; }
+
+        [Required]
         [Range(0, int.MaxValue)]
         public int Kilometers { get; set; }
 

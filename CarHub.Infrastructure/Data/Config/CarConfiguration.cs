@@ -25,6 +25,9 @@ namespace CarHub.Infrastructure.Data.Config
             builder.Property(c => c.Trim)
                 .IsRequired();
 
+            builder.Property(c => c.Description)
+                .IsRequired();
+
             builder.Property(c => c.Kilometers)
                 .IsRequired();
 
