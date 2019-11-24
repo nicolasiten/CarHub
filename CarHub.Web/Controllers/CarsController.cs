@@ -80,7 +80,10 @@ namespace CarHub.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Overview()
         {
-            var carModels = (await _carModelService.GetCarModelsAsync()).OrderBy(cm => cm.SaleDate).ThenBy(cm => cm.Id);
+            var carModels = (await _carModelService.GetCarModelsAsync())
+                .OrderBy(cm => cm.SaleDate != null)
+                .ThenByDescending(cm => cm.SaleDate)
+                .ThenByDescending(cm => cm.Id);
             return View(carModels);
         }
 
