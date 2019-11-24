@@ -44,6 +44,18 @@ namespace CarHub.Web.Controllers
             return View(carModels);
         }
 
+        public async Task<IActionResult> CarDetails(int id)
+        {
+            var carModel = await _carModelService.GetCarModelByIdAsync(id);
+
+            if (carModel == null)
+            {
+                return NotFound($"Car with {id} not found!");
+            }
+
+            return View(carModel);
+        }
+
         [Authorize]
         public IActionResult AddCar()
         {

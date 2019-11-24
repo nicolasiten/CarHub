@@ -14,8 +14,8 @@
             <div class="card">
                 <img src="@Url.ResolveThumbnailSrc(carModel)" class="card-img-top" alt="car">
                 <div class="card-body">
-                    <span class="badge badge-pill badge-dark float-right" style="font-size: 15px;">@carModel.SellingPrice $</span>
-                    <a href="#"><h5 class="card-title">@carModel.Make @carModel.Model @carModel.Trim</h5></a>
+                    <span class="badge badge-pill badge-dark float-right" style="font-size: 15px;">@carModel.SellingPrice.ToString("N") $</span>
+                    <a href="@Url.Action("CarDetails", "Cars", new { id = carModel.Id })"><h5 class="card-title">@carModel.Make @carModel.Model @carModel.Trim</h5></a>
                     <div class="row icon-row">
                         <div class="col car-icons">
                             <img src="~/images/icons/calendar.png" class="icon-img" alt="calendar">

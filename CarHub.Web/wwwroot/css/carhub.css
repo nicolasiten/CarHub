@@ -80,3 +80,13 @@ a.dropdown-toggle {
 li > a {
     color: black;
 }
+
+.car-description {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+.space-right {
+    margin-right: 10px;
+}

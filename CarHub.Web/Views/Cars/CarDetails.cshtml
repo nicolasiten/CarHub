@@ -1,0 +1,85 @@
+﻿@model CarModel
+@{
+    ViewData["Title"] = "Car Details";
+}
+
+@if (Model.SaleDate.HasValue)
+{
+    <h1 class="pagetitle">@Model.Make @Model.Model @Model.Trim <span class="badge badge-danger">Sold</span></h1>
+}
+else
+{
+    <h1 class="pagetitle">@Model.Make @Model.Model @Model.Trim</h1>
+}
+<h5 style="margin-bottom: 60px;">Deeper to know your car</h5>
+
+<div class="row">
+    <div class="col-sm-8 col-xs-12">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @if (Model.ImageIds.Any())
+                {
+                    @foreach (int id in Model.ImageIds)
+                    {
+                        <div @(id == Model.ImageIds.First() ? Html.Raw("class=\"carousel-item active\"") : Html.Raw("class=\"carousel-item\""))>
+                            <img class="d-block w-100" src="@Url.Action("GetImage", "Cars", new {id = @id})" alt="car image">
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="~/images/no-image-availabe.jpg" alt="First slide">
+                    </div>
+                }
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <div class="shadow car-description" style="margin-top: 10px;">
+            <h5 style="padding: 10px;">Description</h5>
+            <p style="padding: 20px;">@Model.Description</p>
+        </div>
+    </div>
+    <div class="col-sm-4 col-xs-12">
+        <div class="shadow car-description">
+            <h5>Details</h5>
+            <br />
+            <table>
+                <tr>
+                    <td>
+                        <p class="space-right"><b>Year:</b></p>
+                    </td>
+                    <td>
+                        <p>@Model.Year</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="space-right"><b>Kilometers:</b></p>
+                    </td>
+                    <td>
+                        <p>@Model.Kilometers</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="space-right"><b>Transmission:</b></p>
+                    </td>
+                    <td>
+                        <p>@Model.TransmissionType.ToString()</p>
+                    </td>
+                </tr>
+            </table>
+
+            <p><span class="badge badge-pill badge-dark float-center" style="font-size: 15px;">@Model.SellingPrice.ToString("N") $</span></p>
+        </div>
+    </div>
+</div> 
