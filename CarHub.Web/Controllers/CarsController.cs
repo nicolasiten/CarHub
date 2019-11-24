@@ -19,6 +19,7 @@ namespace CarHub.Web.Controllers
         private readonly ICarModelService _carModelService;
         private readonly IAsyncRepository<Image> _imageRepository;
         private readonly IAsyncRepository<Thumbnail> _thumbnailRepository;
+        private readonly IAsyncRepository<Repair> _repairRepository;
         private readonly IImageService _imageService;
         private readonly ICarService _carService;
 
@@ -26,28 +27,21 @@ namespace CarHub.Web.Controllers
             ICarModelService carModelService, 
             IAsyncRepository<Image> imageRepository, 
             IAsyncRepository<Thumbnail> thumbnailRepository,
+            IAsyncRepository<Repair> repairRepository,
             IImageService imageService,
             ICarService carService)
         {
             _carModelService = carModelService;
             _imageRepository = imageRepository;
             _thumbnailRepository = thumbnailRepository;
+            _repairRepository = repairRepository;
             _imageService = imageService;
             _carService = carService;
         }
 
         public async Task<IActionResult> Index()
         {
-            // TODO put in CarModelService
-            var carModels = (await _carModelService.GetCarModelsAsync())
-                .Where(cm => cm.ShowCase || cm.SaleDate == null || (cm.SaleDate.HasValue && (cm.SaleDate.Value - DateTime.Now).TotalDays < ConfigurationConstants.RecentlySoldMaxDays))
-                .OrderByDescending(cm => cm.Id).ToList();
-            var carOverviewModel = new CarOverviewModel
-            {
-                CarsForSale = carModels.Where(cm => cm.SaleDate == null),
-                CarsShowcase = carModels.Where(cm => cm.ShowCase),
-                CarsRecentlySold = carModels.Where(cm => cm.SaleDate.HasValue && (cm.SaleDate.Value - DateTime.Now).TotalDays < ConfigurationConstants.RecentlySoldMaxDays)
-            };
+            var carOverviewModel = await _carModelService.GetCarOverviewModelAsync();
 
             return View(carOverviewModel);
         }
@@ -100,12 +94,17 @@ namespace CarHub.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Overview()
         {
-            // TODO ordering in carmodelservice
-            var carModels = (await _carModelService.GetCarModelsAsync())
-                .OrderBy(cm => cm.SaleDate != null)
-                .ThenByDescending(cm => cm.SaleDate)
-                .ThenByDescending(cm => cm.Id);
+            var carModels = await _carModelService.GetCarModelsAdminOverview();
+
             return View(carModels);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> RemoveRepair(int id)
+        {
+            await _repairRepository.DeleteAsync(id);
+
+            return Ok("Successfully removed Repair.");
         }
 
         [Authorize]

@@ -26,9 +26,34 @@
             confirmButtonText: 'Yes, delete it!'
         }).then(function (result) {
             if (result.value) {
-                console.log($(event.target).parents("tr.edit-row:first").find("input.id-field").val());
-                $(event.target).parents("tr.edit-row:first").find("input.delete-field").val("true");
-                $(event.target).parents("tr.edit-row:first").hide();
+                var id = $(event.target).parents("tr.edit-row:first").find("input.id-field").val();
+                $.ajax({
+                    url: RemoveRepairUrl,
+                    type: "post",
+                    data: {
+                        id: id,
+                        date: result.value.Date
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'success',
+                            title: response,
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                        window.setTimeout(function () { location.reload() }, 1000)
+                    },
+                    error: function (response) {
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'error',
+                            title: response.responseText,
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                    }
+                });
 
                 return false;
             }

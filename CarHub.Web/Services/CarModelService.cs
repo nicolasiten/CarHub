@@ -127,5 +127,27 @@ namespace CarHub.Web.Services
             return _mapper.Map<Car, CarModel>(
                 (await _carRepository.GetAllAsync(includeProperties: "Images,ThumbnailImage,Repairs")).SingleOrDefault(c => c.Id == id));
         }
+
+        public async Task<CarOverviewModel> GetCarOverviewModelAsync()
+        {
+            var carModels = (await GetCarModelsAsync())
+                .Where(cm => cm.ShowCase || cm.SaleDate == null || (cm.SaleDate.HasValue && (cm.SaleDate.Value - DateTime.Now).TotalDays < ConfigurationConstants.RecentlySoldMaxDays))
+                .OrderByDescending(cm => cm.Id).ToList();
+
+            return new CarOverviewModel
+            {
+                CarsForSale = carModels.Where(cm => cm.SaleDate == null),
+                CarsShowcase = carModels.Where(cm => cm.ShowCase),
+                CarsRecentlySold = carModels.Where(cm => cm.SaleDate.HasValue && (cm.SaleDate.Value - DateTime.Now).TotalDays < ConfigurationConstants.RecentlySoldMaxDays)
+            };
+        }
+
+        public async Task<IEnumerable<CarModel>> GetCarModelsAdminOverview()
+        {
+            return (await GetCarModelsAsync())
+                .OrderBy(cm => cm.SaleDate != null)
+                .ThenByDescending(cm => cm.SaleDate)
+                .ThenByDescending(cm => cm.Id);
+        }
     }
 }

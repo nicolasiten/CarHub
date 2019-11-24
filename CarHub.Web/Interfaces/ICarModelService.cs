@@ -15,5 +15,9 @@ namespace CarHub.Web.Interfaces
         Task<IEnumerable<CarModel>> GetCarModelsAsync();
 
         Task<CarModel> GetCarModelByIdAsync(int id);
+
+        Task<CarOverviewModel> GetCarOverviewModelAsync();
+
+        Task<IEnumerable<CarModel>> GetCarModelsAdminOverview();
     }
 }
