@@ -38,10 +38,10 @@ namespace CarHub.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // TODO put in CarModelService
             var carModels = (await _carModelService.GetCarModelsAsync())
                 .Where(cm => cm.ShowCase || cm.SaleDate == null || (cm.SaleDate.HasValue && (cm.SaleDate.Value - DateTime.Now).TotalDays < ConfigurationConstants.RecentlySoldMaxDays))
                 .OrderByDescending(cm => cm.Id).ToList();
-
             var carOverviewModel = new CarOverviewModel
             {
                 CarsForSale = carModels.Where(cm => cm.SaleDate == null),
@@ -100,6 +100,7 @@ namespace CarHub.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Overview()
         {
+            // TODO ordering in carmodelservice
             var carModels = (await _carModelService.GetCarModelsAsync())
                 .OrderBy(cm => cm.SaleDate != null)
                 .ThenByDescending(cm => cm.SaleDate)

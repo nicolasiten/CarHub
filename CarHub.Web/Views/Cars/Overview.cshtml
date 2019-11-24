@@ -15,7 +15,8 @@
                         <tr>
                             <th scope="col"></th>
                             <th scope="col">Details</th>
-                            <th scope="col">Purchase Date</th>
+                            <th scope="col">KMs</th>
+                            <th scope="col">Year</th>
                             <th scope="col">LotDate</th>
                             <th scope="col">Purchase $</th>
                             <th scope="col">Selling $</th>
@@ -34,15 +35,13 @@
                                     <img src="@Url.ResolveThumbnailSrc(carModel)" class="img rounded" style="height: 83px; width: 125px;" />
                                 </td>
                                 <td style="white-space: nowrap;">
-                                    <p><b>VIN</b> @carModel.Vin</p>
-                                    <p><b>Year</b> @carModel.Year</p>
-                                    <p><b>Make</b> @carModel.Make</p>
-                                    <p><b>Model</b> @carModel.Model</p>
-                                    <p><b>Trim</b> @carModel.Trim</p>
-                                    <p><b>Kilometers</b> @carModel.Kilometers</p>
-                                    <p><b>Transmission</b> @carModel.TransmissionType</p>
+                                    <p>@carModel.Vin</p>
+                                    <p>@carModel.Make @carModel.Model @carModel.Trim</p>
+                                    <p>@carModel.TransmissionType</p>
+                                    <p>Purchased: @carModel.PurchaseDate.ToShortDateString()</p>
                                 </td>
-                                <td>@carModel.PurchaseDate.ToShortDateString()</td>
+                                <td>@carModel.Kilometers</td>
+                                <td>@carModel.Year</td>
                                 <td>@carModel.LotDate.ToShortDateString()</td>
                                 <td>@carModel.PurchasePrice</td>
                                 <td>@carModel.SellingPrice</td>

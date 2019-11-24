@@ -3,11 +3,13 @@
     ViewData["Title"] = "Edit Car";
 }
 
-<h1>@ViewData["Title"]</h1>
-
 <div class="row justify-content-center">
     <div class="col-md-10 shadow">
         <form method="post">
+            <div class="text-center" enctype="multipart/form-data">
+                <h4>@ViewData["Title"]</h4>
+            </div>
+            <hr />
 
             <partial name="_CarEditor" />
 
@@ -36,7 +38,7 @@
                             <div class="col-4 car-image">
                                 <img src="@Url.Action("GetImage", "Cars", new {id = @Model.ImageIds[i]})" class="img rounded" style="width: 100%;" />
                                 <div class="row justify-content-center">
-                                    <a asp-controller="Cars" asp-action="SetAsThumbnail" onclick="return confirmThumbnailUpdate(this);" 
+                                    <a asp-controller="Cars" asp-action="SetAsThumbnail" onclick="return confirmThumbnailUpdate(this);"
                                        asp-route-imageId="@Model.ImageIds[i]" asp-route-carId="@Model.Id">
                                         <button type="button" class="btn btn-primary">Thumbnail</button>
                                     </a>
