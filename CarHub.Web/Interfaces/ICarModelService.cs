@@ -19,5 +19,7 @@ namespace CarHub.Web.Interfaces
         Task<CarOverviewModel> GetCarOverviewModelAsync();
 
         Task<IEnumerable<CarModel>> GetCarModelsAdminOverview();
+
+        decimal CalculateTotalPurchasePrice(CarModel carModel);
     }
 }

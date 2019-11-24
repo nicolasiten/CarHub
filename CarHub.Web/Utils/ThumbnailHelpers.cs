@@ -19,7 +19,7 @@ namespace CarHub.Web.Utils
             }
             else
             {
-                return "~/images/no-image-availabe.jpg";
+                return "/images/no-image-available.jpg";
             }
         }
     }

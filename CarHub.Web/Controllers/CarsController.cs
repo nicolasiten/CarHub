@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using CarHub.Core.Constants;
 using CarHub.Core.Entities;
 using CarHub.Core.Interfaces;
 using CarHub.Web.Interfaces;
@@ -65,6 +64,19 @@ namespace CarHub.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddCar(CarModel carModel)
+        {
+            if (carModel.SellingPrice <= _carModelService.CalculateTotalPurchasePrice(carModel))
+            {
+                ModelState.AddModelError("", "Car Price is smaller than Purchase Price and Repair costs (must be bigger when adding a new car)!");
+                return View(carModel);
+            }
+
+            return await SaveCar(carModel, "Overview");
+        }
+
+        [Authorize]
         public async Task<IActionResult> EditCar(int id)
         {
             var car = await _carModelService.GetCarModelByIdAsync(id);
@@ -82,13 +94,6 @@ namespace CarHub.Web.Controllers
         public async Task<IActionResult> EditCar(CarModel carModel)
         {
             return await SaveCar(carModel, "EditCar");
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> AddCar(CarModel carModel)
-        {
-            return await SaveCar(carModel, "Overview");
         }
 
         [Authorize]

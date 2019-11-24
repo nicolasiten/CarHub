@@ -149,5 +149,13 @@ namespace CarHub.Web.Services
                 .ThenByDescending(cm => cm.SaleDate)
                 .ThenByDescending(cm => cm.Id);
         }
+
+        public decimal CalculateTotalPurchasePrice(CarModel carModel)
+        {
+            return carModel.PurchasePrice + carModel.RepairModels
+                .Select(rm => rm.RepairCost)
+                .DefaultIfEmpty(0)
+                .Sum();
+        }
     }
 }
