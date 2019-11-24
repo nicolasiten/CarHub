@@ -10,6 +10,8 @@ namespace CarHub.Core.Constants
 
         public const int ThumbnailHeight = 240;
 
+        public const int RecentlySoldMaxDays = 30;
+
         public static readonly string[] SupportedImageFormats = { "png", "jpg", "jpeg", "bmp" };
     }
 }

@@ -90,3 +90,12 @@ li > a {
 .space-right {
     margin-right: 10px;
 }
+
+.overview-badge {
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+.active.overview-nav-pills {
+    background-color: black !important;
+}

@@ -1,0 +1,48 @@
+﻿@using CarHub.Web.Utils
+@model IEnumerable<CarModel>
+
+<div class="row">
+    @foreach (var carModel in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img src="@Url.ResolveThumbnailSrc(carModel)" class="card-img-top" alt="car">
+                <div class="card-body">
+                    <p style="margin-bottom: 30px;">
+                        <span class="badge badge-pill badge-dark float-right overview-badge">@carModel.SellingPrice.ToString("N") $</span>
+                        @if (carModel.SaleDate.HasValue)
+                        {
+                            <span class="badge badge-pill badge-danger float-right overview-badge">Sold</span>
+                        }
+                    </p>
+                    <a href="@Url.Action("CarDetails", "Cars", new { id = carModel.Id })"><h5 class="card-title">@carModel.Make @carModel.Model @carModel.Trim</h5></a>
+                    <div class="row icon-row">
+                        <div class="col car-icons">
+                            <img src="~/images/icons/calendar.png" class="icon-img" alt="calendar">
+                            <h6>@carModel.Year</h6>
+                        </div>
+                        <div class="col car-icons">
+                            <img src="~/images/icons/odometer.png" class="icon-img alt="odometer">
+                            <h6>@carModel.Kilometers KM</h6>
+                        </div>
+                        @if (carModel.TransmissionType == CarHub.Core.Enums.TransmissionType.Automatic)
+                        {
+                            <div class="col car-icons">
+                                <img src="~/images/icons/automatic-transmission.png" class="icon-img alt="transmission">
+                                <h6>Automatic</h6>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col car-icons">
+                                <img src="~/images/icons/manual-transmission.png" class="icon-img alt="transmission">
+                                <h6>Manual</h6>
+                            </div>
+                        }
+                    </div>
+                    <p class="card-text">@(carModel.Description.Length > 200 ? $"{carModel.Description.Substring(0, 200)}..." : carModel.Description)</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

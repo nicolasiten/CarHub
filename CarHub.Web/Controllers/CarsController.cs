@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CarHub.Core.Constants;
 using CarHub.Core.Entities;
 using CarHub.Core.Interfaces;
 using CarHub.Web.Interfaces;
@@ -38,10 +39,17 @@ namespace CarHub.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var carModels = (await _carModelService.GetCarModelsAsync())
-                .Where(cm => cm.ShowCase || cm.SaleDate == null)
-                .OrderByDescending(cm => cm.LotDate).ToList();
+                .Where(cm => cm.ShowCase || cm.SaleDate == null || (cm.SaleDate.HasValue && (cm.SaleDate.Value - DateTime.Now).TotalDays < ConfigurationConstants.RecentlySoldMaxDays))
+                .OrderByDescending(cm => cm.Id).ToList();
 
-            return View(carModels);
+            var carOverviewModel = new CarOverviewModel
+            {
+                CarsForSale = carModels.Where(cm => cm.SaleDate == null),
+                CarsShowcase = carModels.Where(cm => cm.ShowCase),
+                CarsRecentlySold = carModels.Where(cm => cm.SaleDate.HasValue && (cm.SaleDate.Value - DateTime.Now).TotalDays < ConfigurationConstants.RecentlySoldMaxDays)
+            };
+
+            return View(carOverviewModel);
         }
 
         public async Task<IActionResult> CarDetails(int id)
