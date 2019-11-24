@@ -72,3 +72,11 @@ body.swal2-shown {
 .btn {
     margin: 10px;
 }
+
+a.dropdown-toggle {
+    color: black;
+}
+
+li > a {
+    color: black;
+}
