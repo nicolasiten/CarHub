@@ -19,17 +19,20 @@ namespace CarHub.Web.Controllers
         private readonly IAsyncRepository<Image> _imageRepository;
         private readonly IAsyncRepository<Thumbnail> _thumbnailRepository;
         private readonly IImageService _imageService;
+        private readonly ICarService _carService;
 
         public CarsController(
             ICarModelService carModelService, 
             IAsyncRepository<Image> imageRepository, 
             IAsyncRepository<Thumbnail> thumbnailRepository,
-            IImageService imageService)
+            IImageService imageService,
+            ICarService carService)
         {
             _carModelService = carModelService;
             _imageRepository = imageRepository;
             _thumbnailRepository = thumbnailRepository;
             _imageService = imageService;
+            _carService = carService;
         }
 
         public async Task<IActionResult> Index()
@@ -77,7 +80,7 @@ namespace CarHub.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Overview()
         {
-            var carModels = await _carModelService.GetCarModelsAsync();
+            var carModels = (await _carModelService.GetCarModelsAsync()).OrderBy(cm => cm.SaleDate).ThenBy(cm => cm.Id);
             return View(carModels);
         }
 
@@ -95,6 +98,24 @@ namespace CarHub.Web.Controllers
             await _imageService.SetNewThumbnailAsync(imageId, carId);
 
             return Json("Ok");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SetSalesDate(int id, DateTime date)
+        {
+            if (id == null || id == 0)
+            {
+                return StatusCode(400, "invalid car id!");
+            }
+
+            if (date == null)
+            {
+                return StatusCode(400, "invalid date!");
+            }
+
+            await _carService.SetSalesDateAsync(id, date);
+
+            return Ok("Successfully set sales date");
         }
 
         public async Task<FileStreamResult> GetImage(int id)

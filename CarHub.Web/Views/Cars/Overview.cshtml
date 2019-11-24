@@ -46,7 +46,7 @@
                                 <td>@carModel.LotDate.ToShortDateString()</td>
                                 <td>@carModel.PurchasePrice</td>
                                 <td>@carModel.SellingPrice</td>
-                                <td>@carModel.SaleDate</td>
+                                <td>@(carModel.SaleDate.HasValue ? carModel.SaleDate.Value.ToShortDateString() : string.Empty)</td>
                                 <td>@string.Join(", ", carModel.RepairModels.Select(rm => rm.RepairDescription))</td>
                                 <td>@carModel.RepairModels.Sum(rm => rm.RepairCost)$</td>
                                 <td>@carModel.ShowCase</td>
@@ -54,7 +54,7 @@
                                     <a asp-controller="Cars" asp-action="EditCar" asp-route-id="@carModel.Id">
                                         <button class="btn btn-primary">Edit</button>
                                     </a>
-                                    <button class="btn btn-success" onclick="setSaleDate()">Sold</button>
+                                    <button class="btn btn-success" onclick="setSaleDate(@carModel.Id)">Sold</button>
                                 </td>
                             </tr>
                         }
@@ -71,18 +71,7 @@
             $('#cars').DataTable();
         });
 
-        
-        function setSaleDate() {
-            swal.fire({
-                title: "Sale Date",
-                html: '<input id="datetimepicker" type="date" class="form-control" autofocus>',
-                type: "question",
-                onOpen: function () {
-                    var date = new Date();
-                    var currentDate = date.toISOString().slice(0, 10);
-                    document.getElementById('datetimepicker').value = currentDate;
-                }
-            });
-        }
+        var SaveSalesDateUrl = "@Url.Action("SetSalesDate", "Cars")";
     </script>
+    <script src="~/js/overview.js"></script>
 }

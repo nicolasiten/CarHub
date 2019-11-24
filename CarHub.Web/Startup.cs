@@ -46,6 +46,7 @@ namespace CarHub.Web
             // services
             services.AddScoped<ICarModelService, CarModelService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<ICarService, CarService>();
 
             // resolvers
             services.AddScoped<IImageFormatResolver, ImageFormatResolver>();
