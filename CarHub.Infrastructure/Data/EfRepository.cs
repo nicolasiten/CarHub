@@ -7,16 +7,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace CarHub.Infrastructure.Data
 {
     public class EfRepository<T> : IAsyncRepository<T> where T: BaseEntity, new()
     {
         protected readonly ApplicationDbContext dbContext;
+        protected readonly IValidator<T> validator;
 
-        public EfRepository(ApplicationDbContext dbContext)
+        public EfRepository(ApplicationDbContext dbContext, IValidator<T> validator)
         {
             this.dbContext = dbContext;
+            this.validator = validator;
         }
 
         public virtual async Task<T> GetByIdAsync(object id)
@@ -59,6 +62,8 @@ namespace CarHub.Infrastructure.Data
 
         public virtual async Task<T> AddAsync(T entity)
         {
+            await validator.ValidateAndThrowAsync(entity);
+
             dbContext.Set<T>().Add(entity);
             await dbContext.SaveChangesAsync();
 
@@ -67,6 +72,8 @@ namespace CarHub.Infrastructure.Data
 
         public virtual async Task UpdateAsync(T entity)
         {
+            await validator.ValidateAndThrowAsync(entity);
+
             dbContext.Set<T>().Update(entity);
             await dbContext.SaveChangesAsync();
         }

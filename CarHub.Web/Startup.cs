@@ -17,8 +17,11 @@ using CarHub.Core.Interfaces;
 using CarHub.Web.Interfaces;
 using CarHub.Web.Services;
 using AutoMapper;
+using CarHub.Core.Entities;
+using CarHub.Core.Entities.Validations;
 using CarHub.Core.Services;
 using CarHub.Core.Resolvers;
+using FluentValidation;
 
 namespace CarHub.Web
 {
@@ -50,6 +53,12 @@ namespace CarHub.Web
 
             // resolvers
             services.AddScoped<IImageFormatResolver, ImageFormatResolver>();
+
+            // validators
+            services.AddSingleton<IValidator<Car>, CarValidator>();
+            services.AddSingleton<IValidator<Image>, FileDataValidator<Image>>();
+            services.AddSingleton<IValidator<Thumbnail>, FileDataValidator<Thumbnail>>();
+            services.AddSingleton<IValidator<Repair>, RepairValidator>();
 
             services.AddAutoMapper(typeof(Startup));
 
