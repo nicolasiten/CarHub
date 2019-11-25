@@ -81,8 +81,12 @@ namespace CarHub.Infrastructure.Data
         public virtual async Task DeleteAsync(object id)
         {
             T entity = await dbContext.Set<T>().FindAsync(id);
-            dbContext.Set<T>().Remove(entity);
-            await dbContext.SaveChangesAsync();
+
+            if (entity != null)
+            {
+                dbContext.Set<T>().Remove(entity);
+                await dbContext.SaveChangesAsync();
+            }
         }
     }
 }
