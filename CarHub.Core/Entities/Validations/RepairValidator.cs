@@ -10,7 +10,6 @@ namespace CarHub.Core.Entities.Validations
         public RepairValidator()
         {
             RuleFor(r => r.RepairDescription)
-                .NotNull()
                 .NotEmpty();
 
             RuleFor(r => r.RepairCost)

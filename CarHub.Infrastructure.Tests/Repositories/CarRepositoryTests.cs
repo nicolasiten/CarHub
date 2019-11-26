@@ -155,7 +155,7 @@ namespace CarHub.Infrastructure.Tests.Repositories
         }
 
         [Fact]
-        public async Task RemoveNonExistingTest()
+        public async Task RemoveNonExistingCarTest()
         {
             await _carRepository.AddAsync(_car1);
 
@@ -194,6 +194,38 @@ namespace CarHub.Infrastructure.Tests.Repositories
         }
 
         [Fact]
+        public async Task ThrowsMakeEmptyValidationException()
+        {
+            _car2.Make = string.Empty;
+
+            await Assert.ThrowsAsync<ValidationException>(async () => await _carRepository.AddAsync(_car2));
+        }
+
+        [Fact]
+        public async Task ThrowsModelEmptyValidationException()
+        {
+            _car2.Model = string.Empty;
+
+            await Assert.ThrowsAsync<ValidationException>(async () => await _carRepository.AddAsync(_car2));
+        }
+
+        [Fact]
+        public async Task ThrowsTrimEmptyValidationException()
+        {
+            _car2.Trim = string.Empty;
+
+            await Assert.ThrowsAsync<ValidationException>(async () => await _carRepository.AddAsync(_car2));
+        }
+
+        [Fact]
+        public async Task ThrowsDescriptionEmptyValidationException()
+        {
+            _car2.Description = string.Empty;
+
+            await Assert.ThrowsAsync<ValidationException>(async () => await _carRepository.AddAsync(_car2));
+        }
+
+        [Fact]
         public async Task ThrowsKilometersValidationException()
         {
             _car2.Kilometers = -1;
@@ -214,14 +246,6 @@ namespace CarHub.Infrastructure.Tests.Repositories
         {
             _car2.PurchaseDate = new DateTime(2019, 12, 15);
             _car2.LotDate = new DateTime(2019, 12, 14);
-
-            await Assert.ThrowsAsync<ValidationException>(async () => await _carRepository.AddAsync(_car2));
-        }
-
-        [Fact]
-        public async Task ThrowsMakeEmptyValidationException()
-        {
-            _car2.Make = "";
 
             await Assert.ThrowsAsync<ValidationException>(async () => await _carRepository.AddAsync(_car2));
         }
