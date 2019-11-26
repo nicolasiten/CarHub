@@ -10,7 +10,6 @@ namespace CarHub.Core.Entities.Validations
         public FileDataValidator()
         {
             RuleFor(f => f.ImageType)
-                .NotNull()
                 .NotEmpty();
 
             RuleFor(f => f.File)

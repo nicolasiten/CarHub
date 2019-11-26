@@ -66,6 +66,8 @@ namespace CarHub.Infrastructure.Tests.Repositories
             await _repairRepository.AddAsync(_repair1);
 
             await _repairRepository.DeleteAsync(1);
+
+            Assert.Empty(await _repairRepository.GetAllAsync());
         }
 
         [Fact]

@@ -11,7 +11,7 @@ namespace CarHub.Infrastructure.Tests
     {
         protected readonly ApplicationDbContext applicationDbContext;
 
-        public DbContextTestBase()
+        protected DbContextTestBase()
         {
             var serviceProvider = new ServiceCollection().AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
             var applicationDbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
