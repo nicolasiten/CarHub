@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarHub.Infrastructure.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarHub.Core.Tests", "CarHub.Core.Tests\CarHub.Core.Tests.csproj", "{A26F0C67-DA8B-44EA-8419-F3A5AC01CA8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarHub.Tests.Common", "CarHub.Tests.Common\CarHub.Tests.Common.csproj", "{CFBC183F-6229-4101-A7A0-CFC17519E016}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{A26F0C67-DA8B-44EA-8419-F3A5AC01CA8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A26F0C67-DA8B-44EA-8419-F3A5AC01CA8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A26F0C67-DA8B-44EA-8419-F3A5AC01CA8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFBC183F-6229-4101-A7A0-CFC17519E016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFBC183F-6229-4101-A7A0-CFC17519E016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFBC183F-6229-4101-A7A0-CFC17519E016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFBC183F-6229-4101-A7A0-CFC17519E016}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{444F1FB9-9C34-4001-AAD7-E501FA8696E9} = {A7C14899-930E-4A9C-8D65-8E379270B927}
 		{A26F0C67-DA8B-44EA-8419-F3A5AC01CA8C} = {A7C14899-930E-4A9C-8D65-8E379270B927}
+		{CFBC183F-6229-4101-A7A0-CFC17519E016} = {A7C14899-930E-4A9C-8D65-8E379270B927}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {659FCF49-A156-47FE-88C6-09FD55B773FB}

@@ -2,6 +2,7 @@
 using CarHub.Core.Entities.Validations;
 using CarHub.Core.Interfaces;
 using CarHub.Infrastructure.Data;
+using CarHub.Tests.Common.Seeders;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -22,60 +23,9 @@ namespace CarHub.Infrastructure.Tests.Repositories
         {
             _carRepository = new EfRepository<Car>(applicationDbContext, new CarValidator());
 
-            _car1 = new Car
-            {
-                Description = "Description",
-                Kilometers = 100,
-                LotDate = new DateTime(2019, 12, 1),
-                PurchaseDate = new DateTime(2019, 11, 30),
-                Make = "Make",
-                Model = "Model",
-                Trim = "Trim",
-                TransmissionType = Core.Enums.TransmissionType.Automatic,
-                Vin = "11111111111111111",
-                PurchasePrice = 1000,
-                SellingPrice = 2000,
-                ShowCase = true,
-                Year = 2002,
-                ThumbnailImage = new Thumbnail
-                {
-                    ImageType = "ImageType",
-                    File = Convert.FromBase64String("TEST")
-                },
-                Repairs = new List<Repair>
-                {
-                    new Repair
-                    {
-                        RepairDescription = "Description",
-                        RepairCost = 100
-                    }
-                },
-                Images = new List<Image>
-                {
-                    new Image
-                    {
-                        ImageType = "ImageType",
-                        File = Convert.FromBase64String("TEST")
-                    }
-                }
-            };
-
-            _car2 = new Car
-            {
-                Description = "Description1",
-                Kilometers = 200,
-                LotDate = new DateTime(2019, 11, 12),
-                PurchaseDate = new DateTime(2019, 11, 10),
-                Make = "Make1",
-                Model = "Model1",
-                Trim = "Trim1",
-                TransmissionType = Core.Enums.TransmissionType.Manual,
-                Vin = "22222222222222222",
-                PurchasePrice = 5000,
-                SellingPrice = 7000,
-                ShowCase = false,
-                Year = 2012,
-            };
+            var cars = CarDataSeeder.GetEntities().ToArray();
+            _car1 = cars[0];
+            _car2 = cars[1];
         }
 
         [Fact]
