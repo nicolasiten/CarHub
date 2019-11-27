@@ -14,18 +14,15 @@ namespace CarHub.Core.Services
 {
     public class ImageService : IImageService
     {
-        private readonly IAsyncRepository<Car> _carRepository;
         private readonly IAsyncRepository<Entities.Image> _imageRepository;
         private readonly IAsyncRepository<Thumbnail> _thumbnailRepository;
         private readonly IImageFormatResolver _imageFormatResolver;
 
         public ImageService(
-            IAsyncRepository<Car> carRepository, 
             IAsyncRepository<Entities.Image> imageRepository, 
             IAsyncRepository<Thumbnail> thumbnailRepository,
             IImageFormatResolver imageFormatResolver)
         {
-            _carRepository = carRepository;
             _imageRepository = imageRepository;
             _thumbnailRepository = thumbnailRepository;
             _imageFormatResolver = imageFormatResolver;
