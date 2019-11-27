@@ -10,6 +10,8 @@ namespace CarHub.Core.Resolvers
     {
         public ImageFormat Resolve(string imageFormat)
         {
+            imageFormat = imageFormat.ToLower();
+
             if (imageFormat.Contains("png"))
             {
                 return ImageFormat.Png;
