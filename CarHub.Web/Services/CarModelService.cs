@@ -83,9 +83,9 @@ namespace CarHub.Web.Services
                 {
                     dynamic imageObject = JObject.Parse(image);
 
-                    if (imageObject.data != null && !string.IsNullOrEmpty(imageObject.data.Value))
+                    if (imageObject.data != null && !string.IsNullOrEmpty(imageObject.data.Value.ToString()))
                     {
-                        byte[] file = Convert.FromBase64String(imageObject.data.Value);
+                        byte[] file = Convert.FromBase64String(imageObject.data.Value.ToString());
                         string imageType = (string)imageObject.type;
 
                         if (car.Id == 0 && car.ThumbnailImage == null)
@@ -138,7 +138,7 @@ namespace CarHub.Web.Services
             {
                 CarsForSale = carModels.Where(cm => cm.SaleDate == null),
                 CarsShowcase = carModels.Where(cm => cm.ShowCase),
-                CarsRecentlySold = carModels.Where(cm => cm.SaleDate.HasValue && (cm.SaleDate.Value - DateTime.Now).TotalDays < ConfigurationConstants.RecentlySoldMaxDays)
+                CarsRecentlySold = carModels.Where(cm => cm.SaleDate.HasValue && (DateTime.Now - cm.SaleDate.Value).TotalDays < ConfigurationConstants.RecentlySoldMaxDays)
             };
         }
 
