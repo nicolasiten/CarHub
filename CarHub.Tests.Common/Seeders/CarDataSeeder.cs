@@ -1,6 +1,7 @@
 ﻿using CarHub.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CarHub.Tests.Common.Seeders
@@ -28,8 +29,8 @@ namespace CarHub.Tests.Common.Seeders
                     Year = 2002,
                     ThumbnailImage = new Thumbnail
                     {
-                        ImageType = "ImageType",
-                        File = Convert.FromBase64String("TEST")
+                        ImageType = "png",
+                        File = Convert.FromBase64String(FileDataSeeder.GetBase64Images().First())
                     },
                     Repairs = new List<Repair>
                     {
@@ -43,8 +44,8 @@ namespace CarHub.Tests.Common.Seeders
                     {
                         new Image
                         {
-                            ImageType = "ImageType",
-                            File = Convert.FromBase64String("TEST")
+                            ImageType = "png",
+                            File = Convert.FromBase64String(FileDataSeeder.GetBase64Images().First())
                         }
                     }
                 },

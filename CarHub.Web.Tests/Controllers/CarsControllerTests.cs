@@ -37,15 +37,16 @@ namespace CarHub.Web.Tests.Controllers
         {
             Mapper mapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
-            IImageService imageService = new ImageService(
-                _imageRepository,
-                _thumbnailRepository,
-                new ImageFormatResolver());
 
             _carRepository = new EfRepository<Car>(applicationDbContext, new CarValidator());
             _imageRepository = new EfRepository<Image>(applicationDbContext, new FileDataValidator<Image>());
             _thumbnailRepository = new EfRepository<Thumbnail>(applicationDbContext, new FileDataValidator<Thumbnail>());
             _repairRepository = new EfRepository<Repair>(applicationDbContext, new RepairValidator());
+
+            IImageService imageService = new ImageService(
+                _imageRepository,
+                _thumbnailRepository,
+                new ImageFormatResolver());
 
             _carModelService = _carModelService = new CarModelService(
                 _carRepository,
@@ -129,8 +130,113 @@ namespace CarHub.Web.Tests.Controllers
             _carModel.SellingPrice = 50;
             var result = await _carsController.AddCar(_carModel);
 
-            var redirectResult = Assert.IsType<ViewResult>(result);
+            Assert.IsType<ViewResult>(result);
             Assert.True(_carsController.ModelState.ErrorCount == 1);
+        }
+
+        [Fact]
+        public async Task EditCarTest()
+        {
+            var car = CarDataSeeder.GetEntities().First();
+            await _carRepository.AddAsync(car);
+            var result = await _carsController.EditCar(1);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.NotNull(viewResult.Model);
+        }
+
+        [Fact]
+        public async Task EditCarNonExistingTest()
+        {
+            var result = await _carsController.EditCar(22);
+
+            Assert.IsAssignableFrom<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task EditCarSaveTest()
+        {
+            await _carsController.AddCar(_carModel);
+
+            _carModel.Id = 1;
+            _carModel.Description = "NewDescription";
+            var saveResult = await _carsController.EditCar(_carModel);
+            Assert.IsType<AlertDecoratorResult>(saveResult);
+            Assert.Equal("NewDescription", (await _carRepository.GetByIdAsync(1)).Description);
+        }
+
+        [Fact]
+        public async Task OverviewTest()
+        {
+            var cars = CarDataSeeder.GetEntities().ToArray();
+            await _carRepository.AddAsync(cars[0]);
+            await _carRepository.AddAsync(cars[1]);
+            var result = await _carsController.Overview();
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IEnumerable<CarModel>>(viewResult.Model);
+            Assert.Equal(2, model.Count());
+        }
+
+        [Fact]
+        public async Task RemoveRepairTest()
+        {
+            var car = CarDataSeeder.GetEntities().First();
+            await _carRepository.AddAsync(car);
+            var result = await _carsController.RemoveRepair(1);
+
+            Assert.IsAssignableFrom<OkObjectResult>(result);
+            Assert.Empty((await _carRepository.GetAllAsync()).Last().Repairs);
+        }
+
+        [Fact]
+        public async Task RemoveNonExistingRepairTest()
+        {
+            var result = await _carsController.RemoveRepair(22);
+
+            Assert.IsAssignableFrom<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task RemoveImageTest()
+        {
+            var car = CarDataSeeder.GetEntities().First();
+            await _carRepository.AddAsync(car);
+            var result = await _carsController.RemoveImage(1);
+
+            Assert.IsAssignableFrom<JsonResult>(result);
+            Assert.Empty((await _carRepository.GetAllAsync()).Last().Images);
+        }
+
+        [Fact]
+        public async Task RemoveImageNonExistingTest()
+        {
+            var result = await _carsController.RemoveImage(22);
+
+            Assert.IsAssignableFrom<JsonResult>(result);
+        }
+
+        [Fact]
+        public async Task SetAsThumbnailTest()
+        {
+            var car = CarDataSeeder.GetEntities().First();            
+            car.Images.Add(new Image { File = Convert.FromBase64String(FileDataSeeder.GetBase64Images().Last()), ImageType = "png" });
+            await _carRepository.AddAsync(car);
+            var result = await _carsController.SetAsThumbnail(2, 1);
+
+            Assert.IsAssignableFrom<JsonResult>(result);
+            Assert.Equal(car.ThumbnailImage.File, (await _carRepository.GetByIdAsync(1)).ThumbnailImage.File);
+        }
+
+        [Fact]
+        public async Task SetSalesDate()
+        {
+            var car = CarDataSeeder.GetEntities().First();
+            await _carRepository.AddAsync(car);
+            var result = await _carsController.SetSalesDate(1, DateTime.Today);
+
+            Assert.IsAssignableFrom<OkObjectResult>(result);
+            Assert.Equal(DateTime.Today, (await _carRepository.GetAllAsync()).Last().SaleDate);
         }
     }
 }
