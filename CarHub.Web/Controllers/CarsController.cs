@@ -163,7 +163,11 @@ namespace CarHub.Web.Controllers
 
         private async Task<IActionResult> SaveCar(CarModel carModel, string redirectAction)
         {
-            IEnumerable<string> imageErrors = _carModelService.ValidateCarImages(Request.Form["images"]);
+            List<string> imageErrors = new List<string>();
+            if (Request != null)
+            {
+                _carModelService.ValidateCarImages(Request.Form["images"]);
+            }                
 
             foreach (string error in imageErrors)
             {
@@ -175,7 +179,7 @@ namespace CarHub.Web.Controllers
                 return View(carModel);
             }
 
-            await _carModelService.SaveCarModelAsync(carModel, Request.Form["images"]);
+            await _carModelService.SaveCarModelAsync(carModel, Request == null ? new List<string>() : Request.Form["images"].ToList());
 
             return RedirectToAction(redirectAction).WithSuccess("Success", "Successfully saved Car.");
         }
