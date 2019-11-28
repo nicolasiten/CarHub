@@ -37,13 +37,13 @@ namespace CarHub.Web.Services
                     {
                         dynamic imageObject = JObject.Parse(image);
                         
-                        if (imageObject.data != null && !string.IsNullOrEmpty(imageObject.data.Value) 
+                        if (imageObject.data != null && !string.IsNullOrEmpty(imageObject.data.Value.ToString())
                             && !string.IsNullOrEmpty((string)imageObject.type) 
                             && imageObject.size != null && !string.IsNullOrEmpty(imageObject.size.Value.ToString()))
                         {
                             string type = ((string)imageObject.type).ToLower();
 
-                            if (!_imageService.IsImage(Convert.FromBase64String(imageObject.data.Value)))
+                            if (!_imageService.IsImage(Convert.FromBase64String(imageObject.data.Value.ToString())))
                             {
                                 errors.Add($"Uploaded files must be images!");
                             }                            
@@ -53,7 +53,7 @@ namespace CarHub.Web.Services
                             }
                             else if (int.TryParse(imageObject.size.Value.ToString(), out int imageSize) && imageSize > 5000000)
                             {
-                                errors.Add("Images must be smaller than 5MB.");
+                                errors.Add("Images must not be bigger than 5MB.");
                             }
                         }
                     }
