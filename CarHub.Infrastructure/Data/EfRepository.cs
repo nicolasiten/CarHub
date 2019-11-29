@@ -74,8 +74,14 @@ namespace CarHub.Infrastructure.Data
         {
             await validator.ValidateAndThrowAsync(entity);
 
-            dbContext.Set<T>().Update(entity);
-            await dbContext.SaveChangesAsync();
+            T entry = await GetByIdAsync(entity.Id);
+            
+            if (entry != null)
+            {
+                dbContext.Entry(entry).State = EntityState.Detached;
+                dbContext.Set<T>().Update(entity);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         public virtual async Task DeleteAsync(object id)

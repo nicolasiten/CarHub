@@ -30,12 +30,13 @@ namespace CarHub.Web.Tests.Controllers
         private readonly IAsyncRepository<Image> _imageRepository;
         private readonly IAsyncRepository<Thumbnail> _thumbnailRepository;
         private readonly IAsyncRepository<Repair> _repairRepository;
+        private readonly IMapper _mapper;
 
         private readonly CarModel _carModel;
 
         public CarsControllerTests()
         {
-            Mapper mapper = new Mapper(
+            _mapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
 
             _carRepository = new EfRepository<Car>(applicationDbContext, new CarValidator());
@@ -50,7 +51,7 @@ namespace CarHub.Web.Tests.Controllers
 
             _carModelService = _carModelService = new CarModelService(
                 _carRepository,
-                mapper,
+                _mapper,
                 imageService);
 
             _carsController = new CarsController(
@@ -157,10 +158,10 @@ namespace CarHub.Web.Tests.Controllers
         public async Task EditCarSaveTest()
         {
             await _carsController.AddCar(_carModel);
+            var savedModel = (CarModel)Assert.IsType<ViewResult>(await _carsController.EditCar(1)).Model;
 
-            _carModel.Id = 1;
-            _carModel.Description = "NewDescription";
-            var saveResult = await _carsController.EditCar(_carModel);
+            savedModel.Description = "NewDescription";
+            var saveResult = await _carsController.EditCar(savedModel);
             Assert.IsType<AlertDecoratorResult>(saveResult);
             Assert.Equal("NewDescription", (await _carRepository.GetByIdAsync(1)).Description);
         }
