@@ -166,7 +166,7 @@ namespace CarHub.Web.Controllers
             List<string> imageErrors = new List<string>();
             if (Request != null)
             {
-                _carModelService.ValidateCarImages(Request.Form["images"]);
+                imageErrors.AddRange(_carModelService.ValidateCarImages(Request.Form["images"]));
             }                
 
             foreach (string error in imageErrors)
