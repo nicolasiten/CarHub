@@ -1,6 +1,7 @@
 # CarHub
 [![page](https://github.com/nicolasiten/CarHub/blob/master/Resources/carhub-page.JPG?raw=true "page")](https://github.com/nicolasiten/CarHub/blob/master/Resources/carhub-page.JPG?raw=true "page")
 # Projects
+## Project Structure: N-Tier
 ## CarHub.Core
 - Business/Application Model
 - Business Logic
